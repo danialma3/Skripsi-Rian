@@ -1,0 +1,36 @@
+body {
+	padding: 0;
+	margin: 0;
+	background-repeat:no-repeat;
+	background-image:url(loading.gif); 
+	background-position:center;
+	background-size: 100% 100%;
+}
+#preloader {
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background-color:#fff; 
+	z-index:99; 
+}
+#loading {
+	width:200px;
+	height:200px;
+	position:absolute;
+	top: 40%;
+	left:50%;
+	background-image:url(loading.gif); 
+	background-repeat:no-repeat;
+	background-position:center;
+	margin:-100px 0 0 -100px; 
+}
+.content {
+	width: 500px;
+	margin: 10px auto;
+}
+.content img {
+	width: 500px;
+	margin: 100px auto;
+}
