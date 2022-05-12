@@ -10,6 +10,10 @@ if (!isset($_SESSION['nip'])) {
     $nama = $d['nama_pengguna'];
     $username = $d['username'];
   }
+  $query = mysqli_query($connect, "SELECT * FROM tb_penggugat where nip='" . $_SESSION['nip'] . "'");
+  while ($a = mysqli_fetch_array($query)) {
+    $id_penggugat = $a['id_penggugat'];
+  }
 ?>
   <!DOCTYPE html>
   <html lang="en">
@@ -75,6 +79,7 @@ if (!isset($_SESSION['nip'])) {
                 <ul class="nav side-menu" style="margin-top:100px">
                   <li><a href="index.php?menu=home"><i class="fa fa-home"></i> Dashboard</a></li>
                   <li><a href="index.php?menu=formulir"><i class="fa fa-pencil"></i> Formulir Aduan</a></li>
+                  <li><a href="../laporan/laporan_gugatan.php?id_penggugat=<?php echo $id_penggugat; ?>" target="_BLANK"><i class="fa fa-book"></i>Laporan Gugatan</a></li>
                 </ul>
               </div>
             </div>

@@ -1,8 +1,14 @@
 <?php
-require_once __DIR__ . '../../../assets/vendor/autoload.php';
-$mpdf = new \Mpdf\Mpdf(['mode'=>'utf-8','format'=>'A4-L']);
- include "../../koneksi.php";
- $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_gugatan");
+session_start();
+$id_penggugat = $_GET['id_penggugat'];
+if (!isset($_SESSION['nip'])) {
+    echo "<script>document.location.href='../index.php'</script>";
+} else {
+    include "../../koneksi.php";
+    require_once __DIR__ . '../../../assets/vendor/autoload.php';
+    $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
+    $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan LEFT JOIN tb_penggugat ON tb_permohonan.id_penggugat = tb_penggugat.id_penggugat WHERE tb_permohonan.id_penggugat = $id_penggugat;");
+}
 
 $html = '
 <!DOCTYPE html>
@@ -22,7 +28,7 @@ $html = '
     }    
     .right-ttd {
         margin-top:50px;
-        margin-left:700px;
+        margin-left:1000px;
     }
     </style>
  </head>
@@ -36,42 +42,40 @@ $html = '
      Telp. (0511) 4705562, Fax. (0511) 4705356</p>
  </div>
  <hr>
- <h3 align="center">LAPORAN DATA GUGATAN</h3>
- <table border="1" cellpadding="10" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <td>No</td>
-            <td>No Perkara</td>
-            <td>Kategori</td>
-            <td>Penggugat</td>
-            <td>Hakim</td>
-            <td>Panitera</td>
-            <td>Tgl Sidang</td>
-            <td>Tgl Putusan</td>
-            <td>Hasil</td>
-        </tr>
+ <h3 align="center">Berkas Perkara</h3>
+ <table border="0" cellpadding="15" cellspacing="0" width="100%">
+    <thead>';
+$data_gugatan = mysqli_fetch_assoc($cek_gugatan);
+
+$html .= '
+    <tr>
+    <td>Kasus</td>
+    <td>:</td>
+    <td>' . $data_gugatan['jenis_permohonan'] . '</td>
+    </tr>
+    <tr>
+    <td>Nama Pemohon</td>
+    <td>:</td>
+    <td>' . $data_gugatan['nama_pemohon'] . '</td>
+    </tr>
+    <tr>
+    <td>Alamat Pemohon</td>
+    <td>:</td>
+    <td>' . $data_gugatan['nama_termohon'] . '</td>
+    </tr>
+    <tr>
+    <td>Nama Termohon</td>
+    <td>:</td>
+    <td>' . $data_gugatan['tmp_tinggal'] . '</td>
+    </tr>
     </thead>
-    <tbody>
-    </tbody>';
-              $no=1;
-              while ($data_gugatan = mysqli_fetch_assoc($cek_gugatan)) {
-                $html .= '<tr>
-                    <td>'. $no .'</td>
-                    <td>'. $data_gugatan["no_perkara"] .'</td>
-                    <td>'. $data_gugatan["kategori"] .'</td>
-                    <td>'. $data_gugatan["id_penggugat"] .'</td>
-                    <td>'. $data_gugatan["id_hakim"] .'</td>
-                    <td>'. $data_gugatan["id_panitera"] .'</td>
-                    <td>'. $data_gugatan["tgl_sidang"] .'</td>
-                    <td>'. $data_gugatan["tgl_putusan"] .'</td>
-                    <td>'. $data_gugatan["hasil"] .'</td>
-                </tr>';
-              $no++; }
-    $html .= '</tbody> 
+    </tbody>
+    ';
+$html .= '</tbody> 
 </table>
 
 <div class="right-ttd">
-Banjarbaru, '.date('d F Y').'<br>
+Banjarbaru, ' . date('d F Y') . '<br>
 Ketua Pengadilan Negeri Banjarbaru<br><br><br><br><br><br>
 
 __________________________________
@@ -82,4 +86,3 @@ __________________________________
  ';
 $mpdf->WriteHTML($html);
 $mpdf->Output();
- ?>

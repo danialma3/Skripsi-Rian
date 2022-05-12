@@ -30,6 +30,16 @@ include 'koneksi.php';
           </div>
         </div>
         <div class="form-group">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Perkara<span class="required">*</span></label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <select name="jabatan" required="required" class="form-control col-md-7 col-xs-12">
+              <option disabled selected>Silahkan Pilih Jenis Perkara</option>
+              <option value="Penggugat">Perdata</option>
+              <option value="Jaksa">Pidana</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
           <label class="control-label col-md-3 col-sm-3 col-xs-12">Username<span class="required">*</span></label>
           <div class="col-md-6 col-sm-6 col-xs-12">
             <input type="text" name="username" required="required" placeholder="Isikan Nama Username Anda" class="form-control col-md-7 col-xs-12">
@@ -71,15 +81,16 @@ include "koneksi.php";
 if (isset($_POST['simpan'])) {
   $password1 = $_POST["password1"];
   $password2 = $_POST["password2"];
+  $jabatan = $_POST["jabatan"];
   if ($password1 == $password2) {
     $nama_penggugat = $_POST['nama_penggugat'];
     $username = $_POST['username'];
     $password1 = $_POST['password1'];
-    $hasil = mysqli_query($connect, "INSERT INTO tb_pengguna values ('', '$nama_penggugat', 'penggugat', '$username', '$password1')");
+    $hasil = mysqli_query($connect, "INSERT INTO tb_pengguna (nama_pengguna, jabatan, username, password) values ('$nama_penggugat', '$jabatan', '$username', '$password1')");
     if ($hasil) {
       echo '<script language="javascript">alert("Success"); document.location="index.php";</script>';
     } else {
-      echo '<script language="javascript">alert("Gagal"); document.location="index.php";</script>';
+      echo '<script language="javascript">alert("Gagal"); document.location="daftar.php";</script>';
     }
   } elseif ($password1 != $password2) {
     echo '<script language="javascript">alert("Password tidak sama"); document.location="daftar.php";</script>';
