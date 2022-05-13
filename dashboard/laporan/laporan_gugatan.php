@@ -7,14 +7,19 @@ if (!isset($_SESSION['nip'])) {
     include "../../koneksi.php";
     require_once __DIR__ . '../../../assets/vendor/autoload.php';
     $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
+    $c = mysqli_query($connect, "SELECT * FROM tb_penggugat where nip='" . $_SESSION['nip'] . "'");
+    while ($d = mysqli_fetch_array($c)) {
+        $id_penggugat = $d['id_penggugat'];
+    }
     $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan LEFT JOIN tb_penggugat ON tb_permohonan.id_penggugat = tb_penggugat.id_penggugat WHERE tb_permohonan.id_penggugat = $id_penggugat;");
 }
+$data_gugatan = mysqli_fetch_assoc($cek_gugatan);
 
 $html = '
 <!DOCTYPE html>
  <html>
  <head>
-    <title>Laporan Data Gugatan</title>
+    <title>Laporan Surat Permohonan Sidang Perdata</title>
     <style>
     .ttd {
         width: 300px;
@@ -27,58 +32,98 @@ $html = '
         margin-left:50px;
     }    
     .right-ttd {
-        margin-top:50px;
-        margin-left:1000px;
+        
     }
     </style>
  </head>
  <body> 
- <div class="left">
-    <center><img src="../../assets/images/logo.png" width="32%"></center>
- </div>
- <div class="right">
-     <h2 align="center">KEPANITERAAN HUKUM <br>PENGADILAN NEGERI BANJARBARU KELAS II</h2>
-     <p align="center">Jl. A. Yani Km. 18,5 Banjarbaru<br>
-     Telp. (0511) 4705562, Fax. (0511) 4705356</p>
- </div>
- <hr>
- <h3 align="center">Berkas Perkara</h3>
- <table border="0" cellpadding="15" cellspacing="0" width="100%">
+ <h3 align="center" ><u>Surat Permohonan Sidang Perdata</u></h3><br>
+ <div class="ttd">
+Banjarbaru, ' . $data_gugatan['tgl_lapor'] . '<br>
+Kepada Yth. Ketua Pengadilan Negeri kelas II<br>
+di - <br>
+Banjarbaru<br><br><br>
+</div>
+</div>
+ <table border="0" cellpadding="3" cellspacing="0" width="100%">
     <thead>';
-$data_gugatan = mysqli_fetch_assoc($cek_gugatan);
+
 
 $html .= '
     <tr>
-    <td>Kasus</td>
-    <td>:</td>
-    <td>' . $data_gugatan['jenis_permohonan'] . '</td>
-    </tr>
-    <tr>
     <td>Nama Pemohon</td>
     <td>:</td>
-    <td>' . $data_gugatan['nama_pemohon'] . '</td>
+    <td>' . $data_gugatan['nama_p'] . '</td>
+    </tr>
+    <tr>
+    <td>Pekerjaan Pemohon</td>
+    <td>:</td>
+    <td>' . $data_gugatan['pekerjaan_p'] . '</td>
+    </tr>
+    <tr>
+    <td>Tempat, Tanggal Lahir</td>
+    <td>:</td>
+    <td>' . $data_gugatan['tmp_lahir_p'] . ', ' . $data_gugatan['tgl_lahir_p'] . '</td>
     </tr>
     <tr>
     <td>Alamat Pemohon</td>
     <td>:</td>
-    <td>' . $data_gugatan['nama_termohon'] . '</td>
+    <td>' . $data_gugatan['alamat_p'] . '</td>
+    </tr>
+    <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr>
+    <tr>
+    <td colspan="3">Dengan ini mengajukan gugatan perdata atas kasus ' . $data_gugatan['perihal_perkara'] . ' terhadap:</td>
+    </tr>
+    <tr>
+    <td></td>
+    <td></td>
+    <td></td>
     </tr>
     <tr>
     <td>Nama Termohon</td>
     <td>:</td>
-    <td>' . $data_gugatan['tmp_tinggal'] . '</td>
+    <td>' . $data_gugatan['nama_t'] . '</td>
+    </tr>
+    <tr>
+    <td>Pekerjaan Termohon</td>
+    <td>:</td>
+    <td>' . $data_gugatan['pekerjaan_t'] . '</td>
+    </tr>
+    <tr>
+    <td>Tempat, Tanggal Lahir</td>
+    <td>:</td>
+    <td>' . $data_gugatan['tempat_lahir_t'] . ', ' . $data_gugatan['tgl_lahir_t'] . '</td>
+    </tr>
+    <tr>
+    <td>Alamat Termohon</td>
+    <td>:</td>
+    <td>' . $data_gugatan['alamat_t'] . '</td>
+    </tr>
+    <tr>
+    <td></td>
+    <td></td>
+    <td></td>
     </tr>
     </thead>
-    </tbody>
     ';
-$html .= '</tbody> 
-</table>
+$html .= '</tbody>
+    </table>
+    <table border="0" cellpadding="3" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+    <td colspan="3">Demikian surat permohonan ini saya berharap Ketua Pengadilan Tinggi Kelas II Banjarbaru dapat memfasilitasi jadwal sidang dan memanggil Tergugat agar berada pada persidangan.</td>
+    </tr>
+    </thead>
+    </table><br><br>
 
-<div class="right-ttd">
-Banjarbaru, ' . date('d F Y') . '<br>
-Ketua Pengadilan Negeri Banjarbaru<br><br><br><br><br><br>
+<div class="ttd">
+Pembuat Gugatan,<br><br><br><br><br><br>
 
-__________________________________
+' . $data_gugatan['nama_p'] . '
 </div>
 </div>
  </body>

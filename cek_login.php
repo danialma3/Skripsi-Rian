@@ -25,10 +25,18 @@ if ($hit > 0) {
 		session_start();
 		$_SESSION['nip'] = "$id";
 		echo "<script>window.location.href='dashboard/penggugat/index.php?menu=home';</script>";
-	}
-} else {
-	echo "<script>
+	} elseif ($jabatan == "jaksa") {
+		session_start();
+		$_SESSION['nip'] = "$id";
+		echo "<script>window.location.href='dashboard/jaksa/index.php?menu=home';</script>";
+	} elseif ($jabatan == "Jaksa") {
+		session_start();
+		$_SESSION['nip'] = "$id";
+		echo "<script>window.location.href='dashboard/jaksa/index.php?menu=home';</script>";
+	} else {
+		echo "<script>
 		alert('Maaf username dan password anda salah! Silahkan coba lagi');
 		window.location.href='index.php';
 		</script>";
+	}
 }

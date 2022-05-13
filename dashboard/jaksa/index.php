@@ -64,7 +64,7 @@ if (!isset($_SESSION['nip'])) {
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;"><a href="index.php?menu=home" class="site_title">
-                <center><span>- Penggugat -</span></center>
+                <center><span>- Jaksa -</span></center>
               </a>
             </div>
             <div class="clearfix"></div>
