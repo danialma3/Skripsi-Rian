@@ -1,11 +1,18 @@
 <?php
 $nip = $_GET['nip'];
+$c = mysqli_query($connect, "SELECT * FROM tb_penggugat where nip='" . $_SESSION['nip'] . "'");
+while ($d = mysqli_fetch_array($c)) {
+    $id_penggugat = $d['id_penggugat'];
+}
+
+// var_dump($id_penggugat);
+// die;
 
 ?>
 
 <div class="container">
     <center>
-        <h3 style="margin-top: 20px;"><b>Pengajuan Sidang Perkara Perdata</b>
+        <h3 style="margin-top: 20px;"><b>Pengajuan Sidang Perkara Pidana</b>
     </center>
     <br>
     <div class="row">
@@ -13,7 +20,7 @@ $nip = $_GET['nip'];
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Tergugat<span class="required">*</span></label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" name="nama_tergugat" required="required" placeholder="Isikan Nama Tergugat" class="form-control col-md-7 col-xs-12">
+                    <input type="text" name="nama_t" required="required" placeholder="Isikan Nama Tergugat" class="form-control col-md-7 col-xs-12">
                 </div>
             </div>
             <div class="form-group">
@@ -81,26 +88,27 @@ $nip = $_GET['nip'];
 </html>
 <?php
 
-
 if (isset($_POST['simpan'])) {
 
-    $c = mysqli_query($connect, "SELECT * FROM tb_penggugat where nip = $nip");
-    while ($d = mysqli_fetch_array($c)) {
-        $id_penggugat = $d['id_penggugat'];
-    }
-    $nama_t = $_POST['nama_tergugat'];
-    $pekerjaan_t = $_POST['pekerjaan_t'];
-    $tempat_lahir_t = $_POST['tempat_lahir_t'];
-    $tgl_lahir_t = $_POST['tgl_lahir_t'];
-    $alamat_t = $_POST['alamat_t'];
-    $jenis_pengajuan = $_POST['jenis_pengajuan'];
-    $perihal_perkara = $_POST['perihal_perkara'];
-    $tgl_pengajuan = date("Y-m-d");
-    $hasil = mysqli_query($connect, "INSERT INTO tb_permohonan (jenis_pengajuan, perihal_perkara, tgl_lapor, nama_t, pekerjaan_t, tempat_lahir_t, tgl_lahir_t, alamat_t, id_panitera, nama_hakim, tgl_sidang, tgl_putusan, biaya, hasil, id_penggugat) values ('$jenis_pengajuan', '$perihal_perkara', $tgl_pengajuan, '$nama_t', '$pekerjaan_t', '$tempat_lahir_t', $tgl_lahir_t, '$alamat_t', 2, '', 0000-00-00, 0000-00-00, '', '', 2)");
-    if ($hasil) {
-        echo '<script language="javascript">alert("Success"); document.location="index.php?menu=formulir&nip=' . $nip . '";</script>';
-    } else {
-        echo '<script language="javascript">alert("Gagal"); document.location="index.php?menu=formulir&nip=' . $nip . '";</script>';
+    if (isset($_POST['simpan'])) {
+
+
+        $nama_t = $_POST['nama_t'];
+        $pekerjaan_t = $_POST['pekerjaan_t'];
+        $tempat_lahir_t = $_POST['tempat_lahir_t'];
+        $tgl_lahir_t = $_POST['tgl_lahir_t'];
+        $alamat_t = $_POST['alamat_t'];
+        $jenis_pengajuan = $_POST['jenis_pengajuan'];
+        $perihal_perkara = $_POST['perihal_perkara'];
+        $tgl_pengajuan = date("Y-m-d");
+
+        $hasil = mysqli_query($connect, "INSERT INTO tb_permohonan_p (jenis_pengajuan, perihal_perkara, tgl_lapor, nama_t, pekerjaan_t, tempat_lahir_t, tgl_lahir_t, alamat_t, id_penggugat, nip) VALUES ('$jenis_pengajuan', '$perihal_perkara', '$tgl_pengajuan', '$nama_t', '$pekerjaan_t', '$tempat_lahir_t', '$tgl_lahir_t', '$alamat_t', '$id_penggugat', '$nip')");
+        if ($hasil) {
+            echo '<script language="javascript">alert("Success"); document.location="index.php?menu=formulir&nip=' . $nip . '";</script>';
+        } else {
+            echo '<script language="javascript">alert("Gagal"); document.location="index.php?menu=formulir&nip=' . $nip . '";</script>';
+        }
     }
 }
+
 ?>

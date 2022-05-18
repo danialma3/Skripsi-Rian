@@ -6,11 +6,8 @@ while ($b = mysqli_fetch_array($a)) {
     $nama = $b['nama_pengguna'];
     $username = $b['username'];
 }
-$c = mysqli_query($connect, "SELECT * FROM tb_penggugat where nip='" . $_SESSION['nip'] . "'");
-while ($d = mysqli_fetch_array($c)) {
-    $id_penggugat = $d['id_penggugat'];
-}
-$query = mysqli_query($connect, "SELECT * FROM tb_permohonan LEFT JOIN tb_penggugat ON tb_permohonan.id_penggugat = tb_penggugat.id_penggugat WHERE tb_permohonan.id_penggugat = $id_penggugat");
+
+$query = mysqli_query($connect, "SELECT * FROM tb_permohonan_p RIGHT JOIN tb_penggugat ON tb_permohonan_p.nip = tb_penggugat.nip AND tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat");
 
 ?>
 
@@ -39,14 +36,14 @@ $query = mysqli_query($connect, "SELECT * FROM tb_permohonan LEFT JOIN tb_penggu
                 <tbody>
                     <?php while ($e = mysqli_fetch_array($query)) { ?>
                         <tr>
+                            <td><?= $e['nama_p']; ?></td>
                             <?php
-                            if ($e['nama_p'] and $e['jenis_pengajuan'] and $e['perihal_perkara'] and $e['nama_t']) { ?>
-                                <td><?= $e['nama_p']; ?></td>
+                            if ($e['jenis_pengajuan'] and $e['perihal_perkara'] and $e['nama_t']) { ?>
                                 <td><?= $e['jenis_pengajuan']; ?></td>
                                 <td><?= $e['perihal_perkara']; ?></td>
                                 <td><?= $e['nama_t']; ?></td>
                             <?php } else { ?>
-                                <td align="center" colspan="4"><i>Anda Belum Melengkapi Data Penggugat</i></td>
+                                <td align="center" colspan="3"><i>Anda Belum Melengkapi Data Penggugat</i></td>
                             <?php } ?>
                             <?php
                             if ($e['nama_hakim'] and $e['tgl_sidang'] and $e['tgl_putusan']) { ?>
@@ -61,9 +58,12 @@ $query = mysqli_query($connect, "SELECT * FROM tb_permohonan LEFT JOIN tb_penggu
                             <?php } else { ?>
                                 <td align="center" colspan="4"><i>Belum Ada Putusan Mohon Tunggu</i></td>
                             <?php } ?>
-                            <td align="center"><a class="btn btn-sm btn-success" href="../laporan/laporan_gugatan.php?id_permohonan=<?php echo $e['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a>
+                            <?php if ($e['id_permohonan']) { ?>
+                                <td align="center"><a class="btn btn-sm btn-success" href="../laporan/laporan_gugatan.php?id_permohonan=<?php echo $e['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a>
+                                <?php } else { ?>
+                                <td align="center"><a class="btn btn-sm btn-success disabled" href="../laporan/laporan_gugatan.php?id_permohonan=<?php echo $e['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a>
+                                <?php } ?>
                                 <a class="btn btn-sm btn-danger" href="index.php?menu=permohonan&act=del&id_permohonan=<?php echo $e['id_permohonan'] ?>"><i class="fa fa-trash"></i> </a>
-                                </>
                         </tr>
                     <?php } ?>
                 </tbody>

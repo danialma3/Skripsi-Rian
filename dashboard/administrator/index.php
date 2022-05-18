@@ -76,21 +76,22 @@ if (!isset($_SESSION['nip'])) {
                   <li><a href="index.php?menu=home"><i class="fa fa-home"></i> Dashboard</a></li>
                   <li><a><i class="fa fa-cog"></i> Master Data <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="index.php?menu=penggugat">Data Penggugat</a></li>
-                      <li><a href="index.php?menu=permohonan">Data Permohonan</a></li>
+                      <li><a href="index.php?menu=gugatan_jaksa">Data Gugatan Jaksa</a></li>
+                      <li><a href="index.php?menu=gugatan_penggugat">Data Gugatan Penggugat</a></li>
+                      <li><a href="index.php?menu=permohonan_j">Data Permohonan Jaksa</a></li>
+                      <li><a href="index.php?menu=permohonan_p">Data Permohonan Penggugat</a></li>
                       <li><a href="index.php?menu=hakim">Data Hakim</a></li>
-                      <li><a href="index.php?menu=panitera">Data Panitera</a></li>
                       <!-- <li><a href="index.php?menu=jenis_perkara">Data Jenis Perkara</a></li> -->
                     </ul>
                   </li>
-                  <br>
+                  <!-- <br>
                   <h3>Transaksi</h3>
-                  <li><a href="index.php?menu=gugatan"><i class="fa fa-list"></i> Gugatan</a></li>
+                  <li><a href="index.php?menu=gugatan_jaksa"><i class="fa fa-list"></i> Gugatan</a></li>
                   <li><a href="index.php?menu=eksekusi"><i class="fa fa-user"></i> Eksekusi</a></li>
                   <li><a href="index.php?menu=kasasi"><i class="fa fa-table"></i> Kasasi</a></li>
                   <li><a href="index.php?menu=banding"><i class="fa fa-bar-chart"></i> Banding</a></li>
                   <li><a href="index.php?menu=peninjauan"><i class="fa fa-cogs"></i> Peninjauan</a></li>
-                  <br>
+                  <br> -->
                   <h3>Laporan</h3>
                   <li><a><i class="fa fa-book"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -134,17 +135,20 @@ if (!isset($_SESSION['nip'])) {
               if ($menu == "penggugat") {
                 include "penggugat.php";
               }
-              if ($menu == "permohonan") {
-                include "permohonan.php";
+              if ($menu == "permohonan_j") {
+                include "permohonan_j.php";
               }
-              if ($menu == "panitera") {
-                include "panitera.php";
+              if ($menu == "permohonan_p") {
+                include "permohonan_p.php";
               }
               if ($menu == "hakim") {
                 include "hakim.php";
               }
-              if ($menu == "gugatan") {
-                include "gugatan.php";
+              if ($menu == "gugatan_jaksa") {
+                include "gugatan_jaksa.php";
+              }
+              if ($menu == "gugatan_penggugat") {
+                include "gugatan_penggugat.php";
               }
               if ($menu == "kasasi") {
                 include "kasasi.php";

@@ -77,9 +77,9 @@ if (!isset($_SESSION['nip'])) {
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu" style="margin-top:100px">
-                  <li><a href="index.php?menu=home&nip=<?= $nip; ?>"><i class="fa fa-user"></i> Profil</a></li>
+                  <li><a href="index.php?menu=home&nip=<?= $nip; ?>"><i class="fa fa-home"></i> Home</a></li>
                   <li><a href="index.php?menu=formulir&nip=<?= $nip; ?>"><i class="fa fa-pencil"></i> Formulir Aduan</a></li>
-                  <li><a href="index.php?menu=data_gugatan"><i class="fa fa-book"></i> Data Gugatan Anda</a></li>
+                  <li><a href="index.php?menu=data_gugatan&nip=<?= $nip; ?>"><i class="fa fa-book"></i> Data Gugatan Anda</a></li>
                   <!-- <li><a href="../laporan/laporan_gugatan.php?id_penggugat=<?php echo $id_penggugat; ?>" target="_BLANK"><i class="fa fa-book"></i>Data Laporan Anda</a></li> -->
                 </ul>
               </div>

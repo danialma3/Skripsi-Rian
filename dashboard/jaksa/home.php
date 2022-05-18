@@ -19,7 +19,7 @@ if (!isset($_SESSION['nip'])) {
         <div class="row top_tiles">
           <center>
             <div class="product_price">
-              <h1 align="center">Hallo, <?= $nama; ?> !!! Silahkan Tambah Gugatan Dengan Terlebih Dahulu Mengisi Biodata Penggugat</h1>
+              <h1 align="center">Hallo, Jaksa <?= $nama; ?> !!! Silahkan Laporkan Perkara Pidana Anda</h1>
             </div>
             <small><i class="fa fa-check"></i> You Logged As User</small><br>
             <h3><small>Sistem Informasi Kepaniteraan Hukum <br>Di Pengadilan Negeri Banjarbaru Kelas II Berbasis Web</small></h3><br>Silahkan kelola data - data anda<br>Selamat bekerja, jangan lupa logout setelah selesai menggunakan aplikasi ini
