@@ -32,12 +32,12 @@
           <div class="icon"><i class="fa fa-list"></i></div>
           <div class="count">
             <?php
-            $a = mysqli_query($connect, "SELECT * FROM tb_gugatan");
+            $a = mysqli_query($connect, "SELECT * FROM tb_permohonan_p");
             $b = mysqli_num_rows($a);
             echo $b;
             ?></div>
-          <h3>Gugatan</h3>
-          <p>Jumlah Data Gugatan</p>
+          <h3>Perdata</h3>
+          <p>Jumlah Data Permohonan Perdata</p>
         </div>
       </div>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -45,12 +45,12 @@
           <div class="icon"><i class="fa fa-briefcase"></i></div>
           <div class="count">
             <?php
-            $a = mysqli_query($connect, "SELECT * FROM tb_penggugat");
+            $a = mysqli_query($connect, "SELECT * FROM tb_permohonan_j");
             $b = mysqli_num_rows($a);
             echo $b;
             ?></div>
-          <h3>Penggugat</h3>
-          <p>Jumlah Data Penggugat</p>
+          <h3>Pidana</h3>
+          <p>Jumlah Data Permohonan Pidana</p>
         </div>
       </div>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -58,12 +58,14 @@
           <div class="icon"><i class="fa fa-table"></i></div>
           <div class="count">
             <?php
-            $a = mysqli_query($connect, "SELECT * FROM tb_permohonan");
+            $a = mysqli_query($connect, "SELECT * FROM tb_permohonan_j");
             $b = mysqli_num_rows($a);
-            echo $b;
+            $c = mysqli_query($connect, "SELECT * FROM tb_permohonan_j");
+            $d = mysqli_num_rows($c);
+            echo $b + $d;
             ?></div>
-          <h3>Permohonan</h3>
-          <p>Data Permohonan</p>
+          <h3>Total</h3>
+          <p>Total Data Permohonan</p>
         </div>
       </div>
     </div>

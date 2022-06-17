@@ -12,7 +12,7 @@ while ($d = mysqli_fetch_array($c)) {
     // var_dump($id_penggugat);
     // die;
 }
-$query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tb_permohonan_j.nip = $nip");
+$query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tb_permohonan_j.id_penggugat = $id_penggugat");
 
 ?>
 

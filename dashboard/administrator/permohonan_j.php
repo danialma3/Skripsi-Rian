@@ -7,95 +7,12 @@ if ($act == 'del') {
 } elseif ($act == 'edit') {
   $id = $_GET['id_permohonan'];
   $q = mysqli_query($connect, "SELECT * FROM tb_permohonan WHERE id_permohonan='$id'");
-  $data = mysqli_fetch_array($q); ?>
+  $data = mysqli_fetch_array($q);
+
+?>
 
 
-  <form action="" method="POST" class="form-horizontal form-label-left">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Edit Data permohonan</h2>
-          <div class="clearfix"></div>
-        </div>
 
-        <div class="x_content">
-          <br />
-          <form id="demo-form2" enctype="multipart/form-data" method="post" class="form-horizontal form-label-left">
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama permohonan<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="nama_permohonan" required="required" placeholder="Isikan Nama permohonan" class="form-control col-md-7 col-xs-12" value="<?php echo $data['nama_permohonan']; ?>">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Kelamin<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <select name="kelamin" required="required" class="form-control col-md-7 col-xs-12">
-                  <option value="<?php echo $data['kelamin']; ?>"><?php echo $data['kelamin']; ?></option>
-                  <option value="<?php echo $data['kelamin']; ?>">--- Pilih Baru ---</option>
-                  <option value="Laki - Laki">Laki - Laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Lahir<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="tmp_lahir" required="required" placeholder="Isikan Tempat Lahir" class="form-control col-md-7 col-xs-12" value="<?php echo $data['tmp_lahir']; ?>">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Lahir<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="date" name="tgl_lahir" required="required" placeholder="Isikan Tanggal Lahir" class="form-control col-md-7 col-xs-12" value="<?php echo $data['tgl_lahir']; ?>">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Tinggal<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="tmp_tinggal" required="required" placeholder="Isikan Tempat Tinggal" class="form-control col-md-7 col-xs-12" value="<?php echo $data['tmp_tinggal']; ?>">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Agama<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <select name="agama" required="required" class="form-control col-md-7 col-xs-12">
-                  <option value="<?php echo $data['agama']; ?>"><?php echo $data['agama']; ?></option>
-                  <option value="<?php echo $data['agama']; ?>">--- Pilih Baru ---</option>
-                  <option value="Islam">Islam</option>
-                  <option value="Kristen">Kristen</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Pendidikan<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="pendidikan" required="required" placeholder="Isikan Pendidikan" class="form-control col-md-7 col-xs-12" value="<?php echo $data['pendidikan']; ?>">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Warga Negara<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="warganegara" required="required" placeholder="Isikan Warganegara Asal" class="form-control col-md-7 col-xs-12" value="<?php echo $data['warganegara']; ?>">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Pengacara<span class="required">*</span></label>
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="text" name="pengacara" required="required" placeholder="Isikan Nama Pengacara" class="form-control col-md-7 col-xs-12" value="<?php echo $data['pendidikan']; ?>">
-              </div>
-            </div>
-            <div class="ln_solid"></div>
-            <div class="form-group">
-              <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                <input type="reset" class="btn btn-danger" value="Batal">
-                <input type="submit" name="edit" class="btn btn-primary" value="Edit Data permohonan">
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </form>
   <?php
   if (isset($_POST['edit'])) {
     $nama_permohonan = $_POST['nama_permohonan'];
@@ -141,7 +58,6 @@ if ($act == 'del') {
                 <th>Tanggal Putusan</th>
                 <th>Biaya</th>
                 <th>Hasil</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -157,14 +73,124 @@ if ($act == 'del') {
                   <td><?php echo $d['pekerjaan_t']; ?></td>
                   <td><?php echo $d['tempat_lahir_t']; ?>, <?php echo $d['tgl_lahir_t']; ?></td>
                   <td><?php echo $d['alamat_t']; ?></td>
-                  <td><?php echo $d['nama_hakim']; ?></td>
+                  <?php if ($d['id_hakim']) { ?>
+                    <td align="center">
+                      <?php
+                      $h = $d['id_hakim'];
+                      $hakim = mysqli_query($connect, "SELECT * FROM tb_hakim WHERE id_hakim = $h ");
+                      while ($data = mysqli_fetch_array($hakim)) {
+                        echo $data['nama_hakim'];
+                      } ?>
+                      <?php ?>
+                      <br>
+                      <!-- Button trigger modal -->
+                      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editHakim-<?= $d['id_permohonan'] ?>">
+                        Ubah Hakim
+                      </button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="editHakim-<?= $d['id_permohonan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Pilih Hakim</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="text" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Hakim<span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select name="id_hakim" required="required" class="form-control col-md-7 col-xs-12">
+                                      <?php
+                                      $cek_panitera = mysqli_query($connect, "SELECT * FROM tb_hakim");
+                                      while ($data_panitera = mysqli_fetch_array($cek_panitera)) { ?>
+                                        <option value="<?php echo $data_panitera['id_hakim']; ?>"> <?php echo $data_panitera['nama_hakim']; ?></option>
+                                      <?php } ?>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_hakim" class="btn btn-primary">Kirim</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                    </td>
+                  <?php } else { ?>
+                    <td align="center">
+                      Data Hakim Masih Kosong
+                      <br>
+                      <!-- Button trigger modal -->
+                      <a type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tambahHakim-<?= $d["id_permohonan"]; ?>">
+                        Isikan Hakim
+                      </a>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="tambahHakim-<?= $d["id_permohonan"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Pilih Hakim</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="text" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Hakim <span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select name="id_hakim" required="required" class="form-control col-md-7 col-xs-12">
+                                      <?php
+                                      $cek_panitera = mysqli_query($connect, "SELECT * FROM tb_hakim");
+                                      while ($data_panitera = mysqli_fetch_array($cek_panitera)) { ?>
+                                        <option value="<?php echo $data_panitera['id_hakim']; ?>"> <?php echo $data_panitera['nama_hakim']; ?></option>
+                                      <?php } ?>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_hakim" class="btn btn-primary">Kirim</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                    </td>
+                  <?php } ?>
+                  <!-- edit Hakim -->
+                  <?php
+                  if (isset($_POST['isi_hakim']));
+                  if (isset($_POST['isi_hakim'])) {
+                    $id_hakim = $_POST['id_hakim'];
+                    $id_permohonan = $_POST['id_permohonan'];
+                    // var_dump($id_permohonan);
+                    // die;
+                    $hasil = mysqli_query($connect, "UPDATE tb_permohonan_j SET id_hakim = $id_hakim WHERE id_permohonan = $id_permohonan");
+                    if ($hasil) {
+                      echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
+                    } else {
+                      echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=permohonan_j";</script>';
+                    }
+                  }
+                  ?>
                   <td><?php echo $d['tgl_sidang']; ?></td>
                   <td><?php echo $d['tgl_putusan']; ?></td>
                   <td><?php echo $d['biaya']; ?></td>
                   <td><?php echo $d['hasil']; ?></td>
-                  <td align="center"><a class="btn btn-sm btn-danger" href="index.php?menu=permohonan&act=del&id_permohonan=<?php echo $d['id_permohonan'] ?>"><i class="fa fa-trash"></i> </a>
-                    <a class="btn btn-sm btn-warning" href="index.php?menu=permohonan&act=edit&id_permohonan=<?php echo $d['id_permohonan']; ?>"><i class="fa fa-pencil"></i></a>
-                  </td>
                 </tr>
               <?php } ?>
             </tbody>
@@ -187,7 +213,7 @@ if ($act == 'del') {
               </div>
               <div class="x_content">
                 <br />
-                <form id="demo-form2" enctype="multipart/form-data" method="post" class="form-horizontal form-label-left">
+                <form enctype="multipart/form-data" method="post" class="form-horizontal form-label-left">
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">No Permohon<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -289,6 +315,9 @@ if ($act == 'del') {
           </div>
         </div>
         <?php
+
+
+
         if (isset($_POST['simpan'])) {
           $no_pemohon = $_POST['no_pemohon'];
           $jenis_permohonan = $_POST['jenis_permohonan'];
@@ -313,6 +342,7 @@ if ($act == 'del') {
             echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan";</script>';
           }
         }
+
         ?>
     </div>
   </div>

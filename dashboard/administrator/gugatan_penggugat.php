@@ -1,17 +1,52 @@
 <?php
 
 //EDIT BELUM
+if (isset($_POST['tambah'])) {
 
+  if (isset($_POST['tambah'])) {
+    $id_penggugat = $_POST['id_penggugat'];
+    $nama_t = $_POST['nama_t'];
+    $pekerjaan_t = $_POST['pekerjaan_t'];
+    $tempat_lahir_t = $_POST['tempat_lahir_t'];
+    $tgl_lahir_t = $_POST['tgl_lahir_t'];
+    $alamat_t = $_POST['alamat_t'];
+    $jenis_pengajuan = $_POST['jenis_pengajuan'];
+    $perihal_perkara = $_POST['perihal_perkara'];
+    $tgl_pengajuan = date("Y-m-d");
+    $nip = $_POST['nip'];
+    // var_dump($nama_t);
+    // var_dump($pekerjaan_t);
+    // var_dump($tempat_lahir_t);
+    // var_dump($tgl_lahir_t);
+    // var_dump($alamat_t);
+    // var_dump($jenis_pengajuan);
+    // var_dump($perihal_perkara);
+    // var_dump($tgl_pengajuan);
+    // var_dump($id_penggugat);
+    // die;
+
+    $hasil = mysqli_query($connect, "INSERT INTO tb_permohonan_p (jenis_pengajuan, perihal_perkara, tgl_lapor, nama_t, pekerjaan_t, tempat_lahir_t, tgl_lahir_t, alamat_t, id_penggugat, nip) VALUES ('$jenis_pengajuan', '$perihal_perkara', '$tgl_pengajuan', '$nama_t', '$pekerjaan_t', '$tempat_lahir_t', '$tgl_lahir_t', '$alamat_t', '$id_penggugat', '$nip')");
+    if ($hasil) {
+      echo '<script language="javascript">alert("Success"); document.location="index.php?menu=gugatan_penggugat";</script>';
+    } else {
+      echo '<script language="javascript">alert("Gagal"); document.location="index.php?menu=gugatan_penggugat";</script>';
+    }
+  }
+}
 
 
 $act = (isset($_GET['act']) ? strtolower($_GET['act']) : NULL); //$_GET[act];
 if ($act == 'del') {
-  $id = $_GET['id_gugatan'];
-  $q = mysqli_query($connect, "DELETE FROM tb_gugatan WHERE id_gugatan='$id'");
-  echo "<script>document.location.href='index.php?menu=gugatan'</script>";
+  $id = $_GET['id_permohonan'];
+  $q = mysqli_query($connect, "DELETE FROM tb_permohonan_p WHERE tb_permohonan_p.id_permohonan='$id'");
+  if ($q) {
+    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=gugatan_penggugat";</script>';
+  } else {
+    echo '<script language="javascript">alert("Gagal"); document.location="index.php?menu=gugatan_penggugat";</script>';
+  }
 } elseif ($act == 'edit') {
-  $id = $_GET['id_gugatan'];
-  $q = mysqli_query($connect, "SELECT * FROM tb_gugatan WHERE id_gugatan='$id'");
+  $id = $_GET['id_permohonan'];
+  $q = mysqli_query($connect, "SELECT * FROM tb_permohonan_j WHERE id_permohonan='$id'");
   $data = mysqli_fetch_array($q); ?>
 
 
@@ -176,7 +211,7 @@ if ($act == 'del') {
                   <td align="center">
                     <a class="btn btn-sm btn-success disabled" href="../laporan/laporan_gugatan.php?id_permohonan=<?php echo $e['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a>
                   <?php } ?>
-                  <a class="btn btn-sm btn-danger" href="index.php?menu=permohonan&act=del&id_permohonan=<?php echo $e['id_permohonan'] ?>"><i class="fa fa-trash"></i> </a>
+                  <a class="btn btn-sm btn-danger" href="index.php?menu=gugatan_penggugat&act=del&id_permohonan=<?php echo $e['id_permohonan'] ?>"><i class="fa fa-trash"></i> </a>
                   </td>
               </tr>
             <?php } ?>
@@ -189,114 +224,103 @@ if ($act == 'del') {
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form action="" method="POST" class="form-horizontal form-label-left">
-        <div class="modal-body">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-              <div class="x_title">
-                <h2>Tambah Data Gugatan</h2>
-                <div class="clearfix"></div>
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
+            <h2>Tambah Data Gugatan</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form id="demo-form2" method="post" class="form-horizontal form-label-left">
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Tergugat<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="nama_t" required="required" placeholder="Isikan Nama Tergugat" class="form-control col-md-7 col-xs-12">
+                </div>
               </div>
-              <div class="x_content">
-                <br />
-                <form id="demo-form2" enctype="multipart/form-data" method="post" class="form-horizontal form-label-left">
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Tergugat<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="nama_t" required="required" placeholder="Isikan Nama Tergugat" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Pekerjaan Tergugat<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="input" name="pekerjaan_t" required="required" placeholder="Isikan Pekerjaan Tergugat" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Lahir Tergugat<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="input" name="tempat_lahir_t" required="required" placeholder="Isikan Tempat Lahir Tergugat" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Lahir Tergugat<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="date" name="tgl_lahir_t" required="required" placeholder="Isikan Tanggal Lahir Tergugat" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat Tergugat<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="alamat_t" required="required" placeholder="Isikan Alamat Tergugat" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Pengajuan<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select name="jenis_pengajuan" required="required" class="form-control col-md-7 col-xs-12">
-                        <?php
-                        include "koneksi.php";
-                        $cek = mysqli_query($connect, "SELECT * FROM tb_sidang");
-                        while ($data = mysqli_fetch_array($cek)) { ?>
-                          <option value="<?php echo $data['ket_sidang']; ?>"><?php echo $data['ket_sidang']; ?></option>
-                        <?php } ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Perihal Perkara<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="perihal_perkara" required="required" placeholder="Isikan Perihal Perkara Yang Anda Ajukan" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Akun Penggugat<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select name="nip" required="required" class="form-control col-md-7 col-xs-12">
-                        <?php
-                        $cek_pengguna = mysqli_query($connect, "SELECT * FROM tb_pengguna");
-                        while ($data_pengguna = mysqli_fetch_array($cek_pengguna)) { ?>
-                          <option value="<?php echo $data_pengguna['nip']; ?>"> <?php echo $data_pengguna['nama_pengguna']; ?></option>
-                        <?php } ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="ln_solid"></div>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                      <input type="reset" class="btn btn-danger" value="Batal">
-                      <input type="submit" name="tambah" class="btn btn-primary" value="Tambah Data Gugatan">
-                    </div>
-                  </div>
-                </form>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Pekerjaan Tergugat<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="input" name="pekerjaan_t" required="required" placeholder="Isikan Pekerjaan Tergugat" class="form-control col-md-7 col-xs-12">
+                </div>
               </div>
-            </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Lahir Tergugat<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="input" name="tempat_lahir_t" required="required" placeholder="Isikan Tempat Lahir Tergugat" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Lahir Tergugat<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" name="tgl_lahir_t" required="required" placeholder="Isikan Tanggal Lahir Tergugat" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat Tergugat<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="alamat_t" required="required" placeholder="Isikan Alamat Tergugat" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Pengajuan<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name="jenis_pengajuan" required="required" class="form-control col-md-7 col-xs-12">
+                    <?php
+                    include "koneksi.php";
+                    $cek = mysqli_query($connect, "SELECT * FROM tb_sidang");
+                    while ($data = mysqli_fetch_array($cek)) { ?>
+                      <option value="<?php echo $data['ket_sidang']; ?>"><?php echo $data['ket_sidang']; ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Perihal Perkara<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="perihal_perkara" required="required" placeholder="Isikan Perihal Perkara Yang Anda Ajukan" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilih Penggugat<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name="id_penggugat" required="required" class="form-control col-md-7 col-xs-12">
+                    <?php
+                    include "koneksi.php";
+                    $cek = mysqli_query($connect, "SELECT * FROM tb_penggugat");
+                    while ($data = mysqli_fetch_array($cek)) { ?>
+                      <option value="<?php echo $data['id_penggugat']; ?>"><?php echo $data['nama_p']; ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilih Akun Pengguna<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name="nip" required="required" class="form-control col-md-7 col-xs-12">
+                    <?php
+                    include "koneksi.php";
+                    $cek = mysqli_query($connect, "SELECT * FROM tb_pengguna");
+                    while ($data = mysqli_fetch_array($cek)) { ?>
+                      <option value="<?php echo $data['nip']; ?>"><?php echo $data['nama_pengguna']; ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                  <input type="reset" class="btn btn-danger" value="Batal">
+                  <input type="submit" name="tambah" class="btn btn-primary">
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-        <?php
-        if (isset($_POST['tambah'])) {
-          if (isset($_POST['tambah'])) {
-
-            $nip = $_POST['nip'];
-            $nama_t = $_POST['nama_t'];
-            $pekerjaan_t = $_POST['pekerjaan_t'];
-            $tempat_lahir_t = $_POST['tempat_lahir_t'];
-            $tgl_lahir_t = $_POST['tgl_lahir_t'];
-            $alamat_t = $_POST['alamat_t'];
-            $jenis_pengajuan = $_POST['jenis_pengajuan'];
-            $perihal_perkara = $_POST['perihal_perkara'];
-            $tgl_pengajuan = date("Y-m-d");
-            $hasil = $_POST['hasil'];
-
-            $hasil = mysqli_query($connect, "INSERT INTO tb_permohonan (jenis_pengajuan, perihal_perkara, tgl_lapor, nama_t, pekerjaan_t, tempat_lahir_t, tgl_lahir_t, alamat_t, id_penggugat, nip) VALUES ('$jenis_pengajuan', '$perihal_perkara', '$tgl_pengajuan', '$nama_t', '$pekerjaan_t', '$tempat_lahir_t', '$tgl_lahir_t', '$alamat_t', '$id_penggugat', '$nip')");
-            if ($hasil) {
-              echo '<script language="javascript">alert("Success"); document.location="index.php?menu=formulir&nip=' . $nip . '";</script>';
-            } else {
-              echo '<script language="javascript">alert("Gagal"); document.location="index.php?menu=formulir&nip=' . $nip . '";</script>';
-            }
-          }
-        }
-        ?>
+      </div>
     </div>
   </div>
+</div>
 </div>
