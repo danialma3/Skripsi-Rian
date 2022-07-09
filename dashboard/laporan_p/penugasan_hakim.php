@@ -22,6 +22,7 @@ if (!isset($_SESSION['nip'])) {
         $data_pangkat = $data['pangkat_j'];
         $data_asal_kejaksaan = $data['asal_kejaksaan'];
         $data_alamat_kejaksaan = $data['alamat_kejaksaan'];
+        $lapor = $data['tgl_lapor'];
     }
 }
 $data_gugatan = mysqli_fetch_assoc($cek_gugatan);
@@ -30,7 +31,7 @@ $html = '
 <!DOCTYPE html>
  <html>
  <head>
-    <title>Laporan Surat Permohonan Sidang Perdata</title>
+    <title></title>
     <style>
     .ttd {
         width: 300px;
@@ -49,102 +50,86 @@ $html = '
  </head>
  <body> 
  <div class="left">
- <center><img src="../../assets/images/kejaksaan_logo.png" width="38%"></center>
+ <center><img src="../../assets/images/logo.png" width="32%"></center>
 </div>
 <div class="right">
-  <h2 align="center">' . $data_asal_kejaksaan . '</h2>
-  <p align="center">' . $data_alamat_kejaksaan . '<br>
+<h2 align="center">PENGADILAN NEGERI BANJARBARU KELAS II</h2>
+<p align="center">Jl. A. Yani Km. 18,5 Banjarbaru</p><br>
 </div>
 <hr>
- <h3 align="center" ><u>Surat Permohonan Sidang Pidana</u></h3><br>
- <div class="ttd">
-Banjarbaru, ' . $data_gugatan['tgl_lapor'] . '<br>
-Kepada Yth. Ketua Pengadilan Negeri kelas II<br>
-di - <br>
-Banjarbaru<br><br><br>
-</div>
-</div>
+ <h3 align="center" ><u>Penunjukan Ketua Hakim</u></h3>
+ <h4 align="center" >"Demi Keadilan Berdasarkan Ketuhanan Yang Maha Esa"</h4><br>
  <table border="0" cellpadding="3" cellspacing="0" width="100%">
     <thead>';
 
 
 $html .= '
+    <br>
     <tr>
-    <td width="150px">Nama Pemohon</td>
-    <td width="30px">:</td>
-    <td>' . $data_nama . '</td>
-    </tr>
-    <tr>
-    <td>Pangkat</td>
+    <td>Membaca</td>
     <td>:</td>
-    <td>' . $data_pangkat . '</td>
+    <td>Berdasarkan perkara pidana yang dilimpahkan oleh jaksa Penuntut Umum Pada Kejaksaan ' . $data_asal_kejaksaan . ' dengan surat permohonan tanggal ' . $data_gugatan['tgl_lapor'] . '</td>
     </tr>
+    <br>
     <tr>
-    <td>NIP</td>
-    <td>:</td>
-    <td>' . $data_nip . '</td>
-    </tr>
-    <tr>
-    <td>Jabatan</td>
-    <td>:</td>
-    <td>Jaksa Penuntut Umum</td>
-    </tr>
-    <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    </tr>
-    <tr>
-    <td colspan="3">Dengan ini mengajukan gugatan pidana atas kasus ' . $data_gugatan['perihal_perkara'] . ' terhadap:</td>
-    </tr>
-    <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    </tr>
-    <tr>
-    <td>Nama Tersangka</td>
+    <td>Terdakwa</td>
     <td>:</td>
     <td>' . $data_gugatan['nama_t'] . '</td>
     </tr>
     <tr>
-    <td>Pekerjaan Tersangka</td>
+    <td>Menimbang</td>
     <td>:</td>
-    <td>' . $data_gugatan['pekerjaan_t'] . '</td>
+    <td>Memeriksa dan mengadili perkara tersebut diatas perlu ditetapkan hakim yang mengadili sebagaimana tertera dalam penetapan dibawah ini</td>
     </tr>
     <tr>
-    <td>Tempat, Tanggal Lahir</td>
+    <td>Mengingat</td>
     <td>:</td>
-    <td>' . $data_gugatan['tempat_lahir_t'] . ', ' . $data_gugatan['tgl_lahir_t'] . '</td>
-    </tr>
-    <tr>
-    <td>Alamat Tersangka</td>
-    <td>:</td>
-    <td>' . $data_gugatan['alamat_t'] . '</td>
+    <td>- Undang-undang RI No. 48 Tahun 2009 Tentang Kekuasaan Kehakiman</td>
     </tr>
     <tr>
     <td></td>
     <td></td>
     <td></td>
+    </tr>
+    <br>
+    <tr>
+    <td align="center" colspan="3">-----MENETAPKAN----</td>
+    </tr>
+    <br>
+    <br>
+    <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr>
+    <tr>
+    <td>Nama Ketua Hakim</td>
+    ';
+$id_hakim = $data_gugatan["id_hakim"];
+$hakim = mysqli_query($connect, "SELECT * FROM tb_hakim WHERE  id_hakim = $id_hakim");
+$hakim = mysqli_fetch_assoc($hakim);
+$html .= '
+    <td>:</td>
+    <td >' . $hakim['nama_hakim'] . '</td>
     </tr>
     </thead>
     ';
 $html .= '</tbody>
-    </table>
+    </table><br>
     <table border="0" cellpadding="3" cellspacing="0" width="100%">
     <thead>
     <tr>
-    <td colspan="3">Demikian surat permohonan ini saya berharap Ketua Pengadilan Tinggi Kelas II Banjarbaru dapat memfasilitasi jadwal sidang dan memanggil Tergugat agar berada pada persidangan.</td>
+    <td colspan="3"> Untuk memeriksa dan mengadili perkara tersebut diatas .</td>
     </tr>
     </thead>
     </table><br><br>
 
 <div class="ttd">
-Jaksa Penuntut Umum,<br><br><br><br><br><br>
+Ketua Pengadilan Negeri Banjarbaru Kelas II,<br><br><br><br><br><br>
 
-' . $data_nama . '<br>
-' . $data_pangkat . '<br>
-' . $data_nip . '
+Benny Sudarsono, SH., MH<br>
+Pembina (IV/a)<br>
+19781214 200212 1 005
 </div>
 </div>
  </body>

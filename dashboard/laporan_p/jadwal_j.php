@@ -13,7 +13,7 @@ if (!isset($_SESSION['nip'])) {
     while ($d = mysqli_fetch_array($c)) {
         $id_penggugat = $d['id_penggugat'];
     }
-    $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tb_permohonan_j.id_permohonan = '$id_permohonan';");
+    $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan_p LEFT JOIN tb_penggugat ON tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat WHERE tb_permohonan_p.id_permohonan = '$id_permohonan';");
     $jaksa = mysqli_query($connect, "SELECT * FROM tb_jaksa WHERE '" . $_SESSION['nip'] . "'");
     while ($data = mysqli_fetch_array($jaksa)) {
         $data_nama = $data['nama_j'];
@@ -22,6 +22,7 @@ if (!isset($_SESSION['nip'])) {
         $data_pangkat = $data['pangkat_j'];
         $data_asal_kejaksaan = $data['asal_kejaksaan'];
         $data_alamat_kejaksaan = $data['alamat_kejaksaan'];
+        $jadwal = $data['tgl_sidang'];
     }
 }
 $data_gugatan = mysqli_fetch_assoc($cek_gugatan);
@@ -30,7 +31,7 @@ $html = '
 <!DOCTYPE html>
  <html>
  <head>
-    <title>Laporan Surat Permohonan Sidang Perdata</title>
+    <title>Jadwal Sidang Perdata</title>
     <style>
     .ttd {
         width: 300px;
@@ -49,19 +50,18 @@ $html = '
  </head>
  <body> 
  <div class="left">
- <center><img src="../../assets/images/kejaksaan_logo.png" width="38%"></center>
+ <center><img src="../../assets/images/logo.png" width="32%"></center>
 </div>
 <div class="right">
-  <h2 align="center">' . $data_asal_kejaksaan . '</h2>
-  <p align="center">' . $data_alamat_kejaksaan . '<br>
+<h2 align="center">PENGADILAN NEGERI BANJARBARU KELAS II</h2>
+<p align="center">Jl. A. Yani Km. 18,5 Banjarbaru</p><br>
 </div>
 <hr>
- <h3 align="center" ><u>Surat Permohonan Sidang Pidana</u></h3><br>
+ <h3 align="center" ><u>Surat Pengabulan Sidang Perdata</u></h3><br>
  <div class="ttd">
-Banjarbaru, ' . $data_gugatan['tgl_lapor'] . '<br>
-Kepada Yth. Ketua Pengadilan Negeri kelas II<br>
+Kepada Yth. Saudara/ i ' . $data_gugatan['nama_p'] . '<br>
 di - <br>
-Banjarbaru<br><br><br>
+Tempat<br><br><br>
 </div>
 </div>
  <table border="0" cellpadding="3" cellspacing="0" width="100%">
@@ -70,24 +70,17 @@ Banjarbaru<br><br><br>
 
 $html .= '
     <tr>
-    <td width="150px">Nama Pemohon</td>
-    <td width="30px">:</td>
-    <td>' . $data_nama . '</td>
+    <td colspan="3">Sehubungan dengan surat yang dibuat oleh Saudara/ i:</td>
     </tr>
     <tr>
-    <td>Pangkat</td>
+    <td>Nama Pemohon</td>
     <td>:</td>
-    <td>' . $data_pangkat . '</td>
+    <td>' . $data_gugatan["nama_p"] . '</td>
     </tr>
     <tr>
-    <td>NIP</td>
+    <td>Pekerjaan Pemohon</td>
     <td>:</td>
-    <td>' . $data_nip . '</td>
-    </tr>
-    <tr>
-    <td>Jabatan</td>
-    <td>:</td>
-    <td>Jaksa Penuntut Umum</td>
+    <td>' . $data_gugatan["pekerjaan_p"] . '</td>
     </tr>
     <tr>
     <td></td>
@@ -95,7 +88,7 @@ $html .= '
     <td></td>
     </tr>
     <tr>
-    <td colspan="3">Dengan ini mengajukan gugatan pidana atas kasus ' . $data_gugatan['perihal_perkara'] . ' terhadap:</td>
+    <td colspan="3">Dengan ini mengabulkan permohonan sidang atas kasus ' . $data_gugatan['perihal_perkara'] . ' Melawan:</td>
     </tr>
     <tr>
     <td></td>
@@ -103,24 +96,19 @@ $html .= '
     <td></td>
     </tr>
     <tr>
-    <td>Nama Tersangka</td>
+    <td>Nama</td>
     <td>:</td>
     <td>' . $data_gugatan['nama_t'] . '</td>
     </tr>
     <tr>
-    <td>Pekerjaan Tersangka</td>
+    <td>Tempat</td>
     <td>:</td>
-    <td>' . $data_gugatan['pekerjaan_t'] . '</td>
+    <td>Pengadilan Negeri Banjarbaru Kelas II, Jl. A. Yani Km. 18,5 Banjarbaru</td>
     </tr>
     <tr>
-    <td>Tempat, Tanggal Lahir</td>
+    <td>Tanggal Sidang</td>
     <td>:</td>
-    <td>' . $data_gugatan['tempat_lahir_t'] . ', ' . $data_gugatan['tgl_lahir_t'] . '</td>
-    </tr>
-    <tr>
-    <td>Alamat Tersangka</td>
-    <td>:</td>
-    <td>' . $data_gugatan['alamat_t'] . '</td>
+    <td>' . $data_gugatan['tgl_sidang'] . '</td>
     </tr>
     <tr>
     <td></td>
@@ -134,17 +122,17 @@ $html .= '</tbody>
     <table border="0" cellpadding="3" cellspacing="0" width="100%">
     <thead>
     <tr>
-    <td colspan="3">Demikian surat permohonan ini saya berharap Ketua Pengadilan Tinggi Kelas II Banjarbaru dapat memfasilitasi jadwal sidang dan memanggil Tergugat agar berada pada persidangan.</td>
+    <td colspan="3">Demikian surat pengabulan ini dibuat, atas perhatiannya terimakasih .</td>
     </tr>
     </thead>
     </table><br><br>
 
 <div class="ttd">
-Jaksa Penuntut Umum,<br><br><br><br><br><br>
+Ketua Pengadilan Negeri Banjarbaru Kelas II,<br><br><br><br><br><br>
 
-' . $data_nama . '<br>
-' . $data_pangkat . '<br>
-' . $data_nip . '
+Benny Sudarsono, SH., MH<br>
+Pembina (IV/a)<br>
+19781214 200212 1 005
 </div>
 </div>
  </body>

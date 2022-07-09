@@ -95,11 +95,8 @@ if (!isset($_SESSION['nip'])) {
                   <h3>Laporan</h3>
                   <li><a><i class="fa fa-book"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../laporan/laporan_gugatan.php" target="_BLANK"> Laporan Gugatan</a></li>
-                      <li><a href="../laporan/laporan_eksekusi.php" target="_BLANK"> Laporan Eksekusi</a></li>
-                      <li><a href="../laporan/laporan_kasasi.php" target="_BLANK"> Laporan Kasasi</a></li>
-                      <li><a href="../laporan/laporan_banding.php" target="_BLANK"> Laporan Banding</a></li>
-                      <li><a href="../laporan/laporan_peninjauan.php" target="_BLANK"> Laporan Peninjauan</a></li>
+                      <li><a href="index.php?menu=laporan_j">Laporan Kasus Pidana</a></li>
+                      <li><a href="index.php?menu=laporan_p">Laporan Kasus Perdata</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -165,6 +162,12 @@ if (!isset($_SESSION['nip'])) {
               // if($menu=="jenis_perkara"){include "jenis_perkara.php";}
               if ($menu == "ubah_pass") {
                 include "ubah_pass.php";
+              }
+              if ($menu == "laporan_j") {
+                include "laporan_j.php";
+              }
+              if ($menu == "laporan_p") {
+                include "laporan_p.php";
               }
             } else {
               include "home.php";

@@ -204,7 +204,7 @@ if ($act == 'del') {
                   <td align="center" colspan="4"><i>Anda Belum Melengkapi Data Penggugat</i></td>
                 <?php } ?>
                 <?php
-                if ($e['nama_hakim'] and $e['tgl_sidang'] and $e['tgl_putusan']) { ?>
+                if ($e['id_hakim'] and $e['tgl_sidang'] and $e['tgl_putusan']) { ?>
                   <td><?= $e['nama_hakim']; ?></td>
                   <td><?= $e['tgl_sidang']; ?></td>
                   <td><?= $e['tgl_putusan']; ?></td>

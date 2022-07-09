@@ -2,8 +2,13 @@
 $act = (isset($_GET['act']) ? strtolower($_GET['act']) : NULL); //$_GET[act];
 if ($act == 'del') {
   $id = $_GET['id_permohonan'];
-  $q = mysqli_query($connect, "DELETE FROM tb_permohonan WHERE id_permohonan='$id'");
-  echo "<script>document.location.href='index.php?menu=permohonan'</script>";
+  $q = mysqli_query($connect, "DELETE FROM tb_permohonan_j WHERE id_permohonan='$id'");
+  if ($q) {
+    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
+  } else {
+    echo '<script language="javascript">alert("Gagal"); document.location="index.php?menu=permohonan_j";</script>';
+  }
+  echo "<script>document.location.href='index.php?menu=permohonan_j'</script>";
 } elseif ($act == 'edit') {
   $id = $_GET['id_permohonan'];
   $q = mysqli_query($connect, "SELECT * FROM tb_permohonan WHERE id_permohonan='$id'");
@@ -56,8 +61,8 @@ if ($act == 'del') {
                 <th>Nama Hakim</th>
                 <th>Tanggal Sidang</th>
                 <th>Tanggal Putusan</th>
-                <th>Biaya</th>
                 <th>Hasil</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +78,9 @@ if ($act == 'del') {
                   <td><?php echo $d['pekerjaan_t']; ?></td>
                   <td><?php echo $d['tempat_lahir_t']; ?>, <?php echo $d['tgl_lahir_t']; ?></td>
                   <td><?php echo $d['alamat_t']; ?></td>
+
+
+                  <!-- HAKIM -->
                   <?php if ($d['id_hakim']) { ?>
                     <td align="center">
                       <?php
@@ -102,7 +110,7 @@ if ($act == 'del') {
                             <form enctype="multipart/form-data" method="post">
                               <div class="modal-body">
                                 <div class="form-group">
-                                  <input type="text" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Hakim<span class="required">*</span></label>
                                   <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select name="id_hakim" required="required" class="form-control col-md-7 col-xs-12">
@@ -147,7 +155,7 @@ if ($act == 'del') {
                             <form enctype="multipart/form-data" method="post">
                               <div class="modal-body">
                                 <div class="form-group">
-                                  <input type="text" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Hakim <span class="required">*</span></label>
                                   <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select name="id_hakim" required="required" class="form-control col-md-7 col-xs-12">
@@ -187,10 +195,360 @@ if ($act == 'del') {
                     }
                   }
                   ?>
-                  <td><?php echo $d['tgl_sidang']; ?></td>
-                  <td><?php echo $d['tgl_putusan']; ?></td>
-                  <td><?php echo $d['biaya']; ?></td>
-                  <td><?php echo $d['hasil']; ?></td>
+                  <!-- END HAKIM -->
+
+
+
+                  <!-- TANGGAL SIDANG -->
+                  <?php if ($d['tgl_sidang']) { ?>
+                    <td align="center">
+                      <?php echo $d['tgl_sidang']; ?>
+                      <br>
+                      <!-- Button trigger modal -->
+                      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editsidang-<?= $d['id_permohonan'] ?>">
+                        Ubah Tanggal Sidang
+                      </button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="editsidang-<?= $d['id_permohonan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Pilih Tanggal Sidang</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Sidang<span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="date" name="tgl_sidang" required="required" value="<?= $d['tgl_sidang'] ?>" class="form-control col-md-7 col-xs-12">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_sidang" class="btn btn-primary">Kirim</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                    </td>
+                  <?php } else { ?>
+                    <td align="center">
+                      Tanggal Kosong
+                      <br>
+                      <!-- Button trigger modal -->
+                      <a type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tambahsidang-<?= $d["id_permohonan"]; ?>">
+                        Isikan Tanggal
+                      </a>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="tambahsidang-<?= $d["id_permohonan"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Tanggal Putusan</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Sidang<span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="date" name="tgl_sidang" required="required" placeholder="Isikan Tanggal sidang" class="form-control col-md-7 col-xs-12">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_sidang" class="btn btn-primary">Kirim</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                    </td>
+                  <?php } ?>
+                  <!-- edit TANGGAL SIDANG -->
+                  <?php
+                  if (isset($_POST['isi_sidang']));
+                  if (isset($_POST['isi_sidang'])) {
+                    $tgl_sidang = $_POST['tgl_sidang'];
+                    $id_permohonan = $_POST['id_permohonan'];
+                    // var_dump($tgl_sidang);
+                    // die;
+                    $hasil = mysqli_query($connect, "UPDATE tb_permohonan_j SET tgl_sidang = '$tgl_sidang' WHERE id_permohonan = $id_permohonan");
+                    if ($hasil) {
+                      echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
+                    } else {
+                      echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=permohonan_j";</script>';
+                    }
+                  }
+                  ?>
+                  <!-- END TANGGAL SIDANG -->
+
+
+
+
+                  <!-- TANGGAL PUTUSAN -->
+                  <?php if ($d['tgl_putusan']) { ?>
+                    <td align="center">
+                      <?php echo $d['tgl_putusan']; ?>
+                      <br>
+                      <!-- Button trigger modal -->
+                      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPutusan-<?= $d['id_permohonan'] ?>">
+                        Ubah Tanggal Putusan
+                      </button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="editPutusan-<?= $d['id_permohonan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Pilih Tanggal Putusan</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Putusan<span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="date" name="tgl_putusan" required="required" value="<?= $d['tgl_putusan'] ?>" class="form-control col-md-7 col-xs-12">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_putusan" class="btn btn-primary">Kirim</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                    </td>
+                  <?php } else { ?>
+                    <td align="center">
+                      Tanggal Kosong
+                      <br>
+                      <!-- Button trigger modal -->
+                      <a type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tambahsidang-<?= $d["id_permohonan"]; ?>">
+                        Isikan Tanggal
+                      </a>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="tambahsidang-<?= $d["id_permohonan"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Tanggal Putusan</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Putusan<span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="date" name="tgl_putusan" required="required" placeholder="Isikan Tanggal sidang" class="form-control col-md-7 col-xs-12">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_putusan" class="btn btn-primary">Kirim</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                    </td>
+                  <?php } ?>
+                  <!-- edit TANGGAL PUTUSAN -->
+                  <?php
+                  if (isset($_POST['isi_putusan']));
+                  if (isset($_POST['isi_putusan'])) {
+                    $tgl_putusan = $_POST['tgl_putusan'];
+                    $id_permohonan = $_POST['id_permohonan'];
+                    // var_dump($tgl_sidang);
+                    // die;
+                    $hasil = mysqli_query($connect, "UPDATE tb_permohonan_j SET tgl_putusan = '$tgl_putusan' WHERE id_permohonan = $id_permohonan");
+                    if ($hasil) {
+                      echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
+                    } else {
+                      echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=permohonan_j";</script>';
+                    }
+                  }
+                  ?>
+                  <!-- END TANGGAL PUTUSAN -->
+
+
+                  <!-- HASIL -->
+
+                  <?php if ($d['hasil']) { ?>
+                    <td align="center">
+                      <?php echo $d['hasil']; ?>
+                      <br>
+                      <!-- Button trigger modal -->
+                      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editHasil-<?= $d['id_permohonan'] ?>">
+                        Ubah Hasil Sidang
+                      </button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="editHasil-<?= $d['id_permohonan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Isi Hasil Persidangan</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Hasil SIdang<span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" name="hasil" required="required" value="<?= $d['hasil'] ?>" class="form-control col-md-7 col-xs-12">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_hasil" class="btn btn-primary">Kirim</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                    </td>
+                  <?php } else { ?>
+                    <td align="center">
+                      Hasil Kosong
+                      <br>
+                      <!-- Button trigger modal -->
+                      <a type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tambahHasil-<?= $d["id_permohonan"]; ?>">
+                        Iskan Hasil Sidang
+                      </a>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="tambahHasil-<?= $d["id_permohonan"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Tambah Hasil</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form enctype="multipart/form-data" method="post">
+                              <div class="modal-body">
+                                <div class="form-group">
+                                  <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Isi Hasil Sidang<span class="required">*</span></label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" name="hasil" required="required" placeholder="Isikan Hasil SIdang" class="form-control col-md-7 col-xs-12">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_hasil" class="btn btn-primary">Kirim</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                    </td>
+                  <?php } ?>
+                  <!-- Hasil Query -->
+                  <?php
+                  if (isset($_POST['isi_hasil']));
+                  if (isset($_POST['isi_hasil'])) {
+                    $hasilSidang = $_POST['hasil'];
+                    $id_permohonan = $_POST['id_permohonan'];
+                    // var_dump($tgl_sidang);
+                    // die;
+                    $hasil = mysqli_query($connect, "UPDATE tb_permohonan_j SET hasil = '$hasilSidang' WHERE id_permohonan = $id_permohonan");
+                    if ($hasil) {
+                      echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
+                    } else {
+                      echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=permohonan_j";</script>';
+                    }
+                  }
+                  ?>
+
+
+                  <!-- AKSI -->
+                  <td>
+                    <a class="btn btn-sm btn-success" href="../laporan/laporan_gugatan_pidana.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a>
+                    <a class="btn btn-sm btn-danger" href="index.php?menu=permohonan_j&act=del&id_permohonan=<?php echo $d['id_permohonan'] ?>"><i class="fa fa-trash"></i> </a>
+                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit-<?= $d['id_permohonan'] ?>"><i class="fa fa-pencil"></i></a>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="edit-<?= $d['id_permohonan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Data Permogonan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+
+                          <form enctype="multipart/form-data" method="post">
+                            <div class="modal-body">
+                              <div class="">
+                                <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
+                                <?php
+                                $id_p = $d['id_permohonan'];
+                                $cek = mysqli_query($connect, "SELECT * FROM tb_permohonan_j Where id_permohonan = $id_p");
+                                $data1 = mysqli_fetch_array($cek);
+                                // var_dump($data1); 
+                                ?>
+                                <div class="form-group" align="center">
+                                  <label class="control-label">Nama Tegugat<span class="required">*</span></label>
+                                  <div class="">
+                                    <input type="input" name="nama" value="<?= $data1['nama_t']; ?>" class="form-control">
+                                  </div>
+                                  <label class="">Perihal Perkara<span class="required">*</span></label>
+                                  <div class="">
+                                    <input type="input" name="perihal_perkara" value="<?= $data1['perihal_perkara']; ?>" class="form-control ">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="isi_hasil" class="btn btn-primary">Kirim</button>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                      </form>
+                  </td>
                 </tr>
               <?php } ?>
             </tbody>
@@ -215,135 +573,145 @@ if ($act == 'del') {
                 <br />
                 <form enctype="multipart/form-data" method="post" class="form-horizontal form-label-left">
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">No Permohon<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Penggugat (Jaksa)<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="no_pemohon" required="required" placeholder="Isikan Nomor Permohonan" class="form-control col-md-7 col-xs-12">
+                      <select name="id_pengguna" required="required" class="form-control col-md-7 col-xs-12">
+                        <?php
+                        $cek_panitera = mysqli_query($connect, "SELECT * FROM tb_jaksa");
+                        while ($data_panitera = mysqli_fetch_array($cek_panitera)) { ?>
+                          <option value="<?php echo $data_panitera['nip']; ?>"> <?php echo $data_panitera['nama_j']; ?></option>
+                        <?php } ?>
+                      </select>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Permohonan<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <select name="jenis_permohonan" required="required" class="form-control col-md-7 col-xs-12">
-                        <option value="Hak Asuh Anak">Hak Asuh Anak</option>
-                        <option value="Pergantian Nama">Pergantian Nama</option>
+                        <option value="Gugatan">Gugatan</option>
+                        <option value="Banding">Banding</option>
                       </select>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Pemohon<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Perihal Perkara<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="nama_pemohon" required="required" placeholder="Isikan Nama Pemohon" class="form-control col-md-7 col-xs-12">
+                      <input type="text" name="perihal_perkara" required="required" placeholder="Isikan Perkara" class="form-control col-md-7 col-xs-12">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Pemohon<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Lapor<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="tempat_pemohon" required="required" placeholder="Isikan Tempat Pemohon" class="form-control col-md-7 col-xs-12">
+                      <input type="date" name="tgl_lapor" required="required" placeholder="Isikan Tanggal Laor" class="form-control col-md-7 col-xs-12">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Termohon<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Tergugat<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="nama_termohon" required="required" placeholder="Isikan Nama Termohon" class="form-control col-md-7 col-xs-12">
+                      <input type="text" name="nama_t" required="required" placeholder="Isikan Nama Tergugat" class="form-control col-md-7 col-xs-12">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Baru </label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Pekerjaan Tergugat<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="nama_baru" required="required" placeholder="Isikan Nama Baru" class="form-control col-md-7 col-xs-12">
-                      <i>Hanya Diisi Jika Jenis Permohonan Pergantian Nama</i>
+                      <input type="text" name="pekerjaan_t" required="required" placeholder="Isikan Pekerjaan Tergugat" class="form-control col-md-7 col-xs-12">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Daftar<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Lahir Tergugat</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="date" name="tgl_daftar" required="required" placeholder="Isikan Tanggal Daftar" class="form-control col-md-7 col-xs-12">
+                      <input type="text" name="tempat_lahir_t" required="required" placeholder="Isikan Tempat Lahir Tergugat" class="form-control col-md-7 col-xs-12">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Majelis<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Lahir Tergugat<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="nama_majelis" required="required" placeholder="Isikan Nama Majelis" class="form-control col-md-7 col-xs-12">
+                      <input type="date" name="tgl_lahir_t" required="required" placeholder="Isikan Tanggal Lahir Tergugat" class="form-control col-md-7 col-xs-12">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Panitera <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat Tegugat<span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select name="id_panitera" required="required" class="form-control col-md-7 col-xs-12">
+                      <input type="text" name="alamat_t" required="required" placeholder="Isikan Alamat Tergugat" class="form-control col-md-7 col-xs-12">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Hakim <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select name="id_hakim" required="required" class="form-control col-md-7 col-xs-12">
                         <?php
-                        $cek_panitera = mysqli_query($connect, "SELECT * FROM tb_panitera");
+                        $cek_panitera = mysqli_query($connect, "SELECT * FROM tb_hakim");
                         while ($data_panitera = mysqli_fetch_array($cek_panitera)) { ?>
-                          <option value="<?php echo $data_panitera['id_panitera']; ?>"> <?php echo $data_panitera['nama_panitera']; ?></option>
+                          <option value="<?php echo $data_panitera['id_hakim']; ?>"> <?php echo $data_panitera['nama_hakim']; ?></option>
                         <?php } ?>
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Sidang<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="date" name="tgl_sidang" required="required" placeholder="Isikan Tanggal Sidang" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Putusan<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="date" name="tgl_putusan" required="required" placeholder="Isikan Tanggal Putusan" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Akta<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" name="akta" required="required" placeholder="Isikan Akta" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Biaya<span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="number" name="biaya" required="required" placeholder="Isikan Biaya" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                  <div class="ln_solid"></div>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                      <input type="reset" class="btn btn-danger" value="Batal">
-                      <input type="submit" name="simpan" class="btn btn-primary" value="Tambah Data Permohonan">
-                    </div>
-                  </div>
-                </form>
               </div>
-            </div>
-          </div>
-        </div>
-        <?php
-
-
-
-        if (isset($_POST['simpan'])) {
-          $no_pemohon = $_POST['no_pemohon'];
-          $jenis_permohonan = $_POST['jenis_permohonan'];
-          $nama_pemohon = $_POST['nama_pemohon'];
-          $tempat_pemohon = $_POST['tempat_pemohon'];
-          $nama_termohon = $_POST['nama_termohon'];
-          $nama_baru = $_POST['nama_baru'];
-          $tgl_daftar = $_POST['tgl_daftar'];
-          $nama_majelis = $_POST['nama_majelis'];
-          $id_panitera = $_POST['id_panitera'];
-          $tgl_sidang = $_POST['tgl_sidang'];
-          $tgl_putusan = $_POST['tgl_putusan'];
-          $akta = $_POST['akta'];
-          $biaya = $_POST['biaya'];
-
-          if ($jenis_permohonan == "Pergantian Nama") {
-            $hasil = mysqli_query($connect, "INSERT INTO tb_permohonan (no_pemohon,jenis_permohonan,nama_pemohon,tempat_pemohon,nama_termohon,nama_baru,tgl_daftar,nama_majelis,id_panitera,tgl_sidang,tgl_putusan,akta,biaya) values ('$no_pemohon','$jenis_permohonan','$nama_pemohon','$tempat_pemohon','$nama_termohon','$nama_baru','$tgl_daftar','$nama_majelis','$id_panitera','$tgl_sidang','$tgl_putusan','$akta','$biaya')");
-            echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan";</script>';
-          } else {
-            $hasil = mysqli_query($connect, "INSERT INTO tb_permohonan (no_pemohon,jenis_permohonan,nama_pemohon,tempat_pemohon,nama_termohon,tgl_daftar,nama_majelis,id_panitera,tgl_sidang,tgl_putusan,akta,biaya) values ('$no_pemohon','$jenis_permohonan','$nama_pemohon','$tempat_pemohon','$nama_termohon','$tgl_daftar','$nama_majelis','$id_panitera','$tgl_sidang','$tgl_putusan','$akta','$biaya')");
-
-            echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan";</script>';
-          }
-        }
-
-        ?>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Sidang<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" name="tgl_sidang" required="required" placeholder="Isikan Tanggal Sidang" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Putusan<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" name="tgl_putusan" required="required" placeholder="Isikan Tanggal Putusan" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Biaya<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="biaya" required="required" placeholder="Isikan Biaya" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Hasil Sidang<span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="hasil" required="required" placeholder="Isikan Hasil" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                  <input type="reset" class="btn btn-danger" value="Batal">
+                  <input type="submit" name="simpan" class="btn btn-primary" value="Tambah Data Permohonan">
+                </div>
+              </div>
+      </form>
     </div>
   </div>
+</div>
+</div>
+<?php
+
+
+
+if (isset($_POST['simpan'])) {
+  $no_pemohon = $_POST['no_pemohon'];
+  $jenis_permohonan = $_POST['jenis_permohonan'];
+  $nama_pemohon = $_POST['nama_pemohon'];
+  $tempat_pemohon = $_POST['tempat_pemohon'];
+  $nama_termohon = $_POST['nama_termohon'];
+  $nama_baru = $_POST['nama_baru'];
+  $tgl_daftar = $_POST['tgl_daftar'];
+  $nama_majelis = $_POST['nama_majelis'];
+  $id_panitera = $_POST['id_panitera'];
+  $tgl_sidang = $_POST['tgl_sidang'];
+  $tgl_putusan = $_POST['tgl_putusan'];
+  $akta = $_POST['akta'];
+  $biaya = $_POST['biaya'];
+
+  $hasil = mysqli_query($connect, "INSERT INTO tb_permohonan_j ()");
+  if ($hasil) {
+    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
+  } else {
+    echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=permohonan_j";</script>';
+  }
+}
+
+?>
+</div>
+</div>
 </div>

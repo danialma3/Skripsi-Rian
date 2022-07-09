@@ -34,8 +34,8 @@ include 'koneksi.php';
           <div class="col-md-6 col-sm-6 col-xs-12">
             <select name="jabatan" required="required" class="form-control col-md-7 col-xs-12">
               <option disabled selected>Silahkan Pilih Jenis Perkara</option>
-              <option value="Penggugat">Perdata</option>
-              <option value="Jaksa">Pidana</option>
+              <option value="penggugat">Perdata</option>
+              <option value="jaksa">Pidana</option>
             </select>
           </div>
         </div>
