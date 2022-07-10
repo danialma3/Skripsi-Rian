@@ -13,7 +13,7 @@ if (!isset($_SESSION['nip'])) {
     while ($d = mysqli_fetch_array($c)) {
         $id_penggugat = $d['id_penggugat'];
     }
-    $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tb_permohonan_j.id_permohonan = '$id_permohonan';");
+    $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan_p LEFT JOIN tb_penggugat ON tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat WHERE tb_permohonan_p.id_permohonan = '$id_permohonan';");
     $jaksa = mysqli_query($connect, "SELECT * FROM tb_jaksa WHERE '" . $_SESSION['nip'] . "'");
     while ($data = mysqli_fetch_array($jaksa)) {
         $data_nama = $data['nama_j'];
@@ -68,7 +68,7 @@ $html .= '
     <tr>
     <td>Membaca</td>
     <td>:</td>
-    <td>Berdasarkan perkara pidana yang dilimpahkan oleh jaksa Penuntut Umum Pada Kejaksaan ' . $data_asal_kejaksaan . ' dengan surat permohonan tanggal ' . $data_gugatan['tgl_lapor'] . '</td>
+    <td>Berdasarkan perkara perdata yang dilimpahkan oleh Saudara/i ' . $data_gugatan["nama_p"] . '. Pada Kejaksaan ' . $data_asal_kejaksaan . ' dengan surat permohonan tanggal ' . $data_gugatan['tgl_lapor'] . '</td>
     </tr>
     <br>
     <tr>

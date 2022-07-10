@@ -13,7 +13,7 @@ if (!isset($_SESSION['nip'])) {
     while ($d = mysqli_fetch_array($c)) {
         $id_penggugat = $d['id_penggugat'];
     }
-    $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tb_permohonan_j.id_permohonan = '$id_permohonan';");
+    $cek_gugatan = mysqli_query($connect, "SELECT * FROM tb_permohonan_p LEFT JOIN tb_penggugat ON tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat WHERE tb_permohonan_p.id_permohonan = '$id_permohonan';");
     $jaksa = mysqli_query($connect, "SELECT * FROM tb_jaksa WHERE '" . $_SESSION['nip'] . "'");
     while ($data = mysqli_fetch_array($jaksa)) {
         $data_nama = $data['nama_j'];
@@ -31,7 +31,7 @@ $html = '
 <!DOCTYPE html>
  <html>
  <head>
-    <title>Jadwal Sidang</title>
+    <title>Putusan Perdata</title>
     <style>
     .ttd {
         width: 300px;
@@ -57,9 +57,9 @@ $html = '
 <p align="center">Jl. A. Yani Km. 18,5 Banjarbaru</p><br>
 </div>
 <hr>
- <h3 align="center" ><u>Surat Putusan Pengadilan Sidang Pidana</u></h3>
+ <h3 align="center" ><u>Surat Putusan Pengadilan Sidang Perdata</u></h3>
 <h4 align="center">Demi Keadilan Berdasarkan Ketuhanan yang Maha Esa</h4><br>
-<p> Pengadilan Negeri Banjarbaru Kelas II yang mengadili pidana pada pengadilan tingkat kedua dengan acara pemeriksaan biasa telah menjatuhkan putusan atas Terdakwa sebagai berikut :</p>
+<p> Pengadilan Negeri Banjarbaru Kelas II yang memeriksa dan memutus perkara perdata pada pengadilan tingkat kedua telah menjatuhkan putusan sebagai berikut dalam perkara gugatan antara :</p>
 </div>
  <table border="0" cellpadding="3" cellspacing="0" width="100%">
     <thead>';
@@ -67,40 +67,55 @@ $html = '
 
 $html .= '
     <tr>
-    <td width="140px">Nama Lengkap</td>
+    <td width="140px">Nama Penggugat</td>
+    <td width="30px">:</td>
+    <td>' . $data_gugatan['nama_p']  . '</td>
+    </tr>
+    <tr>
+    <td>Berkedudukan</td>
+    <td>:</td>
+    <td>' . $data_gugatan['alamat_p'] . '</td>
+    </tr>
+    <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr>
+    <tr>
+    <td colspan="3" align="center"><h4>Melawan</h4></td>
+    </tr>
+    <tr>
+    <td width="140px">Nama Tergugat</td>
     <td width="30px">:</td>
     <td>' . $data_gugatan['nama_t']  . '</td>
     </tr>
     <tr>
-    <td>Tempat Lahir</td>
-    <td>:</td>
-    <td>' . $data_gugatan['tempat_lahir_t'] . '</td>
-    </tr>
-    <tr>
-    <td>Tanggal Lahir</td>
-    <td>:</td>
-    <td>' . $data_gugatan['tgl_lahir_t'] . '</td>
-    </tr>
-    <tr>
-    <td>Alamat</td>
+    <td>Berkedudukan</td>
     <td>:</td>
     <td>' . $data_gugatan['alamat_t'] . '</td>
     </tr>
     <tr>
-    <td>Pekerjaan</td>
-    <td>:</td>
-    <td>' . $data_gugatan['pekerjaan_t'] . '</td>
+    <td></td>
+    <td></td>
+    <td><br></td>
     </tr>
     <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="3"><p>Pengadilan Negeri tersebut telah membaca berkas perkara dan telah mendengar kedua belah pihak yang berperkara.</p></td>
     </tr>
     <tr>
-    <td colspan="3">Bahwa dalam perkara ini teradap ' . $data_gugatan['hasil'] . '.</td>
+    <td colspan="3" align="center"><h4>Tentang Duduk Perkara</h4><br></td>
     </tr>
-    
+    <tr>
+    <td colspan="3"><p>Menimbang, bahwa Penggugat dengan surat gugatan tertanggal ' . $data_gugatan['tgl_lapor'] . ' yang diterima dan di daftarkan di Kepaniteraan Pengadilan Negeri Banjarbaru Kelas II Telah mengajukan gugatan ' . $data_gugatan["perihal_perkara"] . '.</p><br></td>
+    </tr>
+    <tr>
+    <td colspan="3"><p>Menimbang, bahwa pada hari persidangan telah ditentukan untuk Penggugat dan Tergugat masing-masing menghadap kuasanya tersebut.</p><br></td>
+    </tr>
+    <tr>
+    <td colspan="3"><p>Menimbang, bahwa dengan hal tersebut diatas maka ' . $data_gugatan['hasil'] . '.</p><br></td>
+    </tr>
     </thead>
+    
     ';
 $html .= '</tbody>
     </table>
@@ -113,7 +128,8 @@ $html .= '</tbody>
     </table><br><br>
 
 <div class="ttd">
-diputuskan : ' . $data_gugatan['tgl_putusan'] . '<br>
+Diputuskan di : Banjarbaru<br>
+Pada tanggal : ' . $data_gugatan['tgl_putusan'] . '<br>
 Ketua Pengadilan Negeri Banjarbaru Kelas II,<br><br><br><br><br><br>
 
 Benny Sudarsono, SH., MH<br>
