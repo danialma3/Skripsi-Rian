@@ -1,7 +1,12 @@
+<?php
+$query = mysqli_query($connect, "SELECT * FROM tb_hakim WHERE nip = $nip");
+$hakim_nip = mysqli_fetch_array($query);
+$id_hakim = $hakim_nip['id_hakim'];
+?>
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2><i class="fa fa-user"></i> Data permohonan
+      <h2><i class="fa fa-user"></i> Isi Hasil Kasus Pidana
         <!-- <a class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-plus"></i> Tambah Data permohonan</a> -->
       </h2>
       <div class="clearfix"></div>
@@ -11,27 +16,36 @@
         <table id="datatable" class="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Penggugat</th>
-              <th>Jenis Pengajuan</th>
+              <th>Jaksa Yang Menggugat</th>
               <th>Perihal Perkara</th>
               <th>Tanggal Lapor</th>
-              <th>nama_tergugat</th>
+              <th>Nama Tergugat</th>
+              <th>Tanggal Putusan</th>
               <th>Hasil</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             <?php
-            $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_p LEFT JOIN tb_penggugat ON tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat");
+            $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE id_hakim = $id_hakim ");
             while ($d = mysqli_fetch_array($query)) { ?>
               <tr>
-                <td><?php echo $d['nama_p']; ?></td>
-                <td><?php echo $d['jenis_pengajuan']; ?></td>
+                <td><?php echo $d['nama_j']; ?></td>
                 <td><?php echo $d['perihal_perkara']; ?></td>
                 <td><?php echo $d['tgl_lapor']; ?></td>
                 <td><?php echo $d['nama_t']; ?></td>
-                <!-- HASIL -->
+                <?php if ($d['tgl_putusan']) { ?>
+                  <td>
+                    <?php echo $d['tgl_putusan']; ?>
+                  </td>
+                <?php } else { ?>
+                  <td align="center">
+                    Anda Belum Memutuskan Tanggal
+                  </td>
+                <?php } ?>
 
+
+                <!-- HASIL -->
                 <?php if ($d['hasil']) { ?>
                   <td align="center">
                     <?php echo $d['hasil']; ?>
@@ -41,6 +55,7 @@
                     Hasil Kosong
                   </td>
                 <?php } ?>
+                <!-- Hasil Query -->
 
                 <!-- AKSI -->
                 <?php if ($d['hasil']) { ?>
@@ -65,9 +80,14 @@
                             <div class="modal-body">
                               <div class="form-group">
                                 <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Hasil SIdang<span class="required">*</span></label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="text" name="hasil" required="required" value="<?= $d['hasil'] ?>" class="form-control col-md-7 col-xs-12">
+                                <label class="control-label ">Hasil SIdang<span class="required">*</span></label>
+                                <div>
+                                  <input type="text" name="hasil" required="required" value="<?= $d['hasil'] ?>" class="form-control">
+                                </div>
+                                <br>
+                                <label class="control-label">Diputuskan Tanggal<span class="required">*</span></label>
+                                <div>
+                                  <input type="date" name="tgl_putusan" required="required" value="<?= $d['tgl_putusan'] ?>" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -102,9 +122,14 @@
                             <div class="modal-body">
                               <div class="form-group">
                                 <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_permohonan"]; ?>">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Isi Hasil Sidang<span class="required">*</span></label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="text" name="hasil" required="required" placeholder="Isikan Hasil SIdang" class="form-control col-md-7 col-xs-12">
+                                <label class="control-label">Isi Hasil Sidang<span class="required">*</span></label>
+                                <div>
+                                  <input type="text" name="hasil" required="required" placeholder="Isikan Hasil SIdang" class="form-control">
+                                </div>
+                                <br>
+                                <label class="control-label">Diputuskan Tanggal<span class="required">*</span></label>
+                                <div>
+                                  <input type="date" name="tgl_putusan" required="required" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -125,13 +150,14 @@
                 if (isset($_POST['isi_hasil'])) {
                   $hasilSidang = $_POST['hasil'];
                   $id_permohonan = $_POST['id_permohonan'];
+                  $tgl_putusan = $_POST['tgl_putusan'];
                   // var_dump($tgl_sidang);
                   // die;
-                  $hasil = mysqli_query($connect, "UPDATE tb_permohonan_p SET hasil = '$hasilSidang' WHERE id_permohonan = $id_permohonan");
+                  $hasil = mysqli_query($connect, "UPDATE tb_permohonan_j SET hasil = '$hasilSidang', tgl_putusan = '$tgl_putusan' WHERE id_permohonan = $id_permohonan");
                   if ($hasil) {
-                    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=hasil_sidang";</script>';
+                    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=isi_hasil_putusan";</script>';
                   } else {
-                    echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=hasil_sidang";</script>';
+                    echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=isi_hasil_putusan";</script>';
                   }
                 }
                 ?>

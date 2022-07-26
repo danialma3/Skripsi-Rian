@@ -20,7 +20,7 @@
                 <th>Tempat, Tanggal Lahir</th>
                 <th>Alamat Tergugat</th>
                 <th>Nama Hakim</th>
-                <th>Aksi</th>
+                <th>Aksi Tunjuk Hakim</th>
               </tr>
             </thead>
             <tbody>

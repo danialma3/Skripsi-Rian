@@ -1,7 +1,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2><i class="fa fa-user"></i> Penunjukan Hakim Kasus Pidana
+      <h2><i class="fa fa-user"></i> Data permohonan
         <!-- <a class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-plus"></i> Tambah Data permohonan</a> -->
       </h2>
       <div class="clearfix"></div>
@@ -16,9 +16,6 @@
               <th>Perihal Perkara</th>
               <th>Tanggal Lapor</th>
               <th>nama_tergugat</th>
-              <th>Pekerjaan Tergugat</th>
-              <th>Tempat, Tanggal Lahir</th>
-              <th>Alamat Tergugat</th>
               <th>Nama Hakim</th>
               <th>Aksi</th>
             </tr>
@@ -33,33 +30,42 @@
                 <td><?php echo $d['perihal_perkara']; ?></td>
                 <td><?php echo $d['tgl_lapor']; ?></td>
                 <td><?php echo $d['nama_t']; ?></td>
-                <td><?php echo $d['pekerjaan_t']; ?></td>
-                <td><?php echo $d['tempat_lahir_t']; ?>, <?php echo $d['tgl_lahir_t']; ?></td>
-                <td><?php echo $d['alamat_t']; ?></td>
-
-
                 <!-- HAKIM -->
                 <?php if ($d['id_hakim']) { ?>
-                  <?php if ($d['id_hakim']) { ?>
-                    <td align="center">
-                      <?php
-                      $h = $d['id_hakim'];
-                      $hakim = mysqli_query($connect, "SELECT * FROM tb_hakim WHERE id_hakim = $h ");
-                      while ($data = mysqli_fetch_array($hakim)) {
-                        echo $data['nama_hakim'];
-                      } ?>
-                    </td>
-                  <?php } else { ?>
-                    <td align="center">
-                      Data Hakim Masih Kosong
-                    </td>
-                  <?php } ?>
-
-                  <!-- END HAKIM -->
-
-                  <!-- AKSI -->
                   <td align="center">
-
+                    <?php
+                    $h = $d['id_hakim'];
+                    $hakim = mysqli_query($connect, "SELECT * FROM tb_hakim WHERE id_hakim = $h ");
+                    while ($data = mysqli_fetch_array($hakim)) {
+                      echo $data['nama_hakim'];
+                    } ?>
+                  </td>
+                <?php } else { ?>
+                  <td align="center">
+                    Hakim Belum Ditentukan
+                  </td>
+                <?php } ?>
+                <!-- edit Hakim -->
+                <?php
+                if (isset($_POST['isi_hakim']));
+                if (isset($_POST['isi_hakim'])) {
+                  $id_hakim = $_POST['id_hakim'];
+                  $id_permohonan = $_POST['id_permohonan'];
+                  // var_dump($id_permohonan);
+                  // die;
+                  $hasil = mysqli_query($connect, "UPDATE tb_permohonan_j SET id_hakim = $id_hakim WHERE id_permohonan = $id_permohonan");
+                  if ($hasil) {
+                    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
+                  } else {
+                    echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=permohonan_j";</script>';
+                  }
+                }
+                ?>
+                <!-- END HAKIM -->
+                <!-- AKSI -->
+                <!-- HAKIM -->
+                <?php if ($d['id_hakim']) { ?>
+                  <td align="center">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editHakim-<?= $d['id_permohonan'] ?>">
                       Ubah Hakim
@@ -156,12 +162,13 @@
                   // die;
                   $hasil = mysqli_query($connect, "UPDATE tb_permohonan_j SET id_hakim = $id_hakim WHERE id_permohonan = $id_permohonan");
                   if ($hasil) {
-                    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=tunjuk_hakim_p";</script>';
+                    echo '<script language="javascript">alert("Success"); document.location="index.php?menu=permohonan_j";</script>';
                   } else {
-                    echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=tunjuk_hakim_p";</script>';
+                    echo '<script language="javascript">alert("Gagal coy"); document.location="index.php?menu=permohonan_j";</script>';
                   }
                 }
                 ?>
+                <!-- END HAKIM -->
               </tr>
             <?php } ?>
           </tbody>

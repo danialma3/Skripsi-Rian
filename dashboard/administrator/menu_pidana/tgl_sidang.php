@@ -16,9 +16,6 @@
               <th>Perihal Perkara</th>
               <th>Tanggal Lapor</th>
               <th>nama_tergugat</th>
-              <th>Pekerjaan Tergugat</th>
-              <th>Tempat, Tanggal Lahir</th>
-              <th>Alamat Tergugat</th>
               <th>Tanggal Sidang</th>
               <th>Aksi</th>
             </tr>
@@ -33,9 +30,6 @@
                 <td><?php echo $d['perihal_perkara']; ?></td>
                 <td><?php echo $d['tgl_lapor']; ?></td>
                 <td><?php echo $d['nama_t']; ?></td>
-                <td><?php echo $d['pekerjaan_t']; ?></td>
-                <td><?php echo $d['tempat_lahir_t']; ?>, <?php echo $d['tgl_lahir_t']; ?></td>
-                <td><?php echo $d['alamat_t']; ?></td>
                 <!-- TANGGAL SIDANG -->
                 <?php if ($d['tgl_sidang']) { ?>
                   <td align="center">
