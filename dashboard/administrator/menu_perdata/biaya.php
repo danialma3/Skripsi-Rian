@@ -20,7 +20,7 @@
               <th>Tempat, Tanggal Lahir</th>
               <th>Alamat Tergugat</th>
               <th>Biaya</th>
-              <th>Aksi</th>
+              <th>Aksi Biaya</th>
             </tr>
           </thead>
           <tbody>
@@ -79,7 +79,7 @@
                           <form enctype="multipart/form-data" method="post">
                             <div class="modal-body">
                               <div class="form-group">
-                                <input type="hidden" name="id_permohonan" class="form-control" id="field1" value="<?= $d["id_biaya"]; ?>">
+                                <input type="text" name="id_biaya" class="form-control" id="field1" value="<?= $d["id_biaya"]; ?>">
 
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Biaya Pendaftaran<span class="required">*</span></label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -282,7 +282,7 @@
           <?php
           if (isset($_POST['ubah_biaya']));
           if (isset($_POST['ubah_biaya'])) {
-            $id_biaya = $_POST['id_biaya'] ? $_POST['id_biaya'] : 0;
+            $id_biaya = $_POST['id_biaya'];
             $pendaftaran = $_POST['pendaftaran'] ? $_POST['pendaftaran'] : 0;
             $proses = $_POST['proses'] ? $_POST['proses'] : 0;
             $panggilan = $_POST['panggilan'] ? $_POST['panggilan'] : 0;
@@ -295,7 +295,6 @@
             // var_dump($tgl_sidang);
             // die;
             $hasil = mysqli_query($connect, "UPDATE tb_biaya SET 
-            id_permohonan = $id_permohonan, 
             pendaftaran = $pendaftaran,
             proses = $proses,
             panggilan = $panggilan,

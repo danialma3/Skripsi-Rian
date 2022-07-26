@@ -20,7 +20,7 @@
                 <th>Tempat, Tanggal Lahir</th>
                 <th>Alamat Tergugat</th>
                 <th>Tanggal Sidang</th>
-                <th>Aksi</th>
+                <th>Aksi Tanggal Sidang</th>
               </tr>
             </thead>
             <tbody>
