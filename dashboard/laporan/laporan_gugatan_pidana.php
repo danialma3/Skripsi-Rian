@@ -41,6 +41,7 @@ $html = '
     }
     .right {
         margin-left:50px;
+        width = 90%;
     }    
     .right-ttd {
         

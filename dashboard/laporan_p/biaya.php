@@ -22,7 +22,7 @@ if (!isset($_SESSION['nip'])) {
         $data_asal_kejaksaan = $data['asal_kejaksaan'];
         $data_alamat_kejaksaan = $data['alamat_kejaksaan'];
     }
-    $query = mysqli_query($connect, "SELECT * FROM tb_biaya WHERE id_permohonanx = '$id_permohonan'");
+    $query = mysqli_query($connect, "SELECT * FROM tb_biaya WHERE id_permohonan = '$id_permohonan'");
 }
 $data_gugatan = mysqli_fetch_assoc($cek_gugatan);
 $biaya = mysqli_fetch_assoc($query);

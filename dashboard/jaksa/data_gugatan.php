@@ -51,8 +51,11 @@ $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaks
                                 <td align="center" colspan="4"><i>Anda Belum Melengkapi Data Penggugat</i></td>
                             <?php } ?>
                             <?php
-                            if ($e['nama_hakim'] and $e['tgl_sidang'] and $e['tgl_putusan']) { ?>
-                                <td><?= $e['nama_hakim']; ?></td>
+                            if ($e['id_hakim'] and $e['tgl_sidang'] and $e['tgl_putusan']) { ?>
+                                <?php $id_hakim = $e["id_hakim"];
+                                $h = mysqli_query($connect, "SELECT * FROM tb_hakim WHERE id_hakim=$id_hakim");
+                                $data_hakim = mysqli_fetch_array($h); ?>
+                                <td><?= $data_hakim['nama_hakim']; ?></td>
                                 <td><?= $e['tgl_sidang']; ?></td>
                                 <td><?= $e['tgl_putusan']; ?></td>
                                 <?php if ($e['hasil']) { ?>

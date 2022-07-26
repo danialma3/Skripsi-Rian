@@ -81,17 +81,26 @@ if (!isset($_SESSION['nip'])) {
                       <li><a href="index.php?menu=permohonan_j">Data Permohonan Jaksa</a></li>
                       <li><a href="index.php?menu=permohonan_p">Data Permohonan Penggugat</a></li>
                       <li><a href="index.php?menu=hakim">Data Hakim</a></li>
-                      <!-- <li><a href="index.php?menu=jenis_perkara">Data Jenis Perkara</a></li> -->
                     </ul>
                   </li>
-                  <!-- <br>
-                  <h3>Transaksi</h3>
-                  <li><a href="index.php?menu=gugatan_jaksa"><i class="fa fa-list"></i> Gugatan</a></li>
-                  <li><a href="index.php?menu=eksekusi"><i class="fa fa-user"></i> Eksekusi</a></li>
-                  <li><a href="index.php?menu=kasasi"><i class="fa fa-table"></i> Kasasi</a></li>
-                  <li><a href="index.php?menu=banding"><i class="fa fa-bar-chart"></i> Banding</a></li>
-                  <li><a href="index.php?menu=peninjauan"><i class="fa fa-cogs"></i> Peninjauan</a></li>
-                  <br> -->
+                  <li><a><i class="fa fa-gears"></i> Menu Panitera Pidana <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="index.php?menu=tunjuk_hakim_p">Penunjukan Hakim</a></li>
+                      <li><a href="index.php?menu=tgl_sidang_p">Tentukan Tanggal Sidang</a></li>
+                      <li><a href="index.php?menu=tgl_putusan_p">Tentukan Tanggal Putusan</a></li>
+                      <li><a href="index.php?menu=hasil_sidang_p">Hasil Persidangan</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-gears"></i> Menu Panitera Perdata <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="index.php?menu=tunjuk_hakim">Penunjukan Hakim</a></li>
+                      <li><a href="index.php?menu=tgl_sidang">Tentukan Tanggal Sidang</a></li>
+                      <li><a href="index.php?menu=tgl_putusan">Tentukan Tanggal Putusan</a></li>
+                      <li><a href="index.php?menu=hasil_sidang">Hasil Persidangan</a></li>
+                      <li><a href="index.php?menu=biaya">Biaya</a></li>
+                    </ul>
+                  </li>
+
                   <h3>Laporan</h3>
                   <li><a><i class="fa fa-book"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -168,6 +177,33 @@ if (!isset($_SESSION['nip'])) {
               }
               if ($menu == "laporan_p") {
                 include "laporan_p.php";
+              }
+              if ($menu == "tunjuk_hakim") {
+                include "menu_perdata/tunjuk_hakim.php";
+              }
+              if ($menu == "tgl_sidang") {
+                include "menu_perdata/tgl_sidang.php";
+              }
+              if ($menu == "tgl_putusan") {
+                include "menu_perdata/tgl_putusan.php";
+              }
+              if ($menu == "hasil_sidang") {
+                include "menu_perdata/hasil_sidang.php";
+              }
+              if ($menu == "biaya") {
+                include "menu_perdata/biaya.php";
+              }
+              if ($menu == "tunjuk_hakim_p") {
+                include "menu_pidana/tunjuk_hakim.php";
+              }
+              if ($menu == "tgl_sidang_p") {
+                include "menu_pidana/tgl_sidang.php";
+              }
+              if ($menu == "tgl_putusan_p") {
+                include "menu_pidana/tgl_putusan.php";
+              }
+              if ($menu == "hasil_sidang_p") {
+                include "menu_pidana/hasil_sidang.php";
               }
             } else {
               include "home.php";
