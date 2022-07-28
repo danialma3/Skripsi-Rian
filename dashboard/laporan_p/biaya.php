@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'functions.php';
 $id_permohonan = $_GET['id_permohonan'];
 
 if (!isset($_SESSION['nip'])) {
@@ -58,7 +59,8 @@ $html = '
 <p align="center">Jl. A. Yani Km. 18,5 Banjarbaru</p><br>
 </div>
 <hr>
- <h3 align="center" ><u>Biaya Panjar Sidang Perdata</u></h3><br>
+ <h3 align="center" ><u>Biaya Panjar Sidang Perdata</u></h3>
+ <h4 align="center" >Nomor : W15-U13/' . getNomor($data_gugatan["tgl_lapor"], $data_gugatan['id_permohonan'], "KU", "00") . '</h4><br>
  <div class="ttd">
 
 </div>
@@ -263,6 +265,24 @@ $html .= '
             Rp. ' . $biaya['materai'] . '
             </td>
         </tr>
+        <tr>
+        <td width="36" valign="top">
+            <p>
+                9
+            </p>
+        </td>
+        <td width="300" valign="top">
+            <p>
+                Total
+            </p>
+        </td>
+        <td width="350" valign="top">';
+$total = $biaya['pendaftaran'] + $biaya['proses'] + $biaya['panggilan'] + $biaya['mediasi']  + $biaya['pemberitahuan']  + $biaya['redaksi']  + $biaya['putusan'] + $biaya['materai'];
+
+$html .= '
+        Rp. ' . $total . '
+        </td>
+    </tr>
     </tbody>
 </table>
 </div>

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'functions.php';
 $id_penggugat = $_GET['id_penggugat'];
 $id_permohonan = $_GET['id_permohonan'];
 
@@ -58,6 +59,7 @@ $html = '
 </div>
 <hr>
  <h3 align="center" ><u>Surat Putusan Pengadilan Sidang Pidana</u></h3>
+ <h4 align="center" >Nomor : W15-U13/' . getNomor($data_gugatan["tgl_putusan"], $data_gugatan['id_permohonan'], "HK", "01") . '</h4>
 <h4 align="center">Demi Keadilan Berdasarkan Ketuhanan yang Maha Esa</h4><br>
 <p> Pengadilan Negeri Banjarbaru Kelas II yang mengadili pidana pada pengadilan tingkat kedua dengan acara pemeriksaan biasa telah menjatuhkan putusan atas Terdakwa sebagai berikut :</p>
 </div>
@@ -79,7 +81,7 @@ $html .= '
     <tr>
     <td>Tanggal Lahir</td>
     <td>:</td>
-    <td>' . $data_gugatan['tgl_lahir_t'] . '</td>
+    <td>' . tgl_indo($data_gugatan['tgl_lahir_t']) . '</td>
     </tr>
     <tr>
     <td>Alamat</td>
@@ -113,7 +115,7 @@ $html .= '</tbody>
     </table><br><br>
 
 <div class="ttd">
-diputuskan : ' . $data_gugatan['tgl_putusan'] . '<br>
+diputuskan : ' . tgl_indo($data_gugatan['tgl_putusan']) . '<br>
 Ketua Pengadilan Negeri Banjarbaru Kelas II,<br><br><br><br><br><br>
 
 Benny Sudarsono, SH., MH<br>

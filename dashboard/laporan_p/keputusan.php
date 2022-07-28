@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'functions.php';
 $id_penggugat = $_GET['id_penggugat'];
 $id_permohonan = $_GET['id_permohonan'];
 
@@ -8,7 +9,7 @@ if (!isset($_SESSION['nip'])) {
 } else {
     include "../../koneksi.php";
     require_once __DIR__ . '../../../assets/vendor/autoload.php';
-    $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
+    $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'Legal-P']);
     $c = mysqli_query($connect, "SELECT * FROM tb_penggugat where nip='" . $_SESSION['nip'] . "'");
     while ($d = mysqli_fetch_array($c)) {
         $id_penggugat = $d['id_penggugat'];
@@ -58,6 +59,7 @@ $html = '
 </div>
 <hr>
  <h3 align="center" ><u>Surat Putusan Pengadilan Sidang Perdata</u></h3>
+ <h4 align="center" >Nomor : W15-U13/' . getNomor($data_gugatan["tgl_putusan"], $data_gugatan['id_permohonan'], "HK", "02") . '</h4>
 <h4 align="center">Demi Keadilan Berdasarkan Ketuhanan yang Maha Esa</h4><br>
 <p> Pengadilan Negeri Banjarbaru Kelas II yang memeriksa dan memutus perkara perdata pada pengadilan tingkat kedua telah menjatuhkan putusan sebagai berikut dalam perkara gugatan antara :</p>
 </div>
@@ -106,7 +108,7 @@ $html .= '
     <td colspan="3" align="center"><h4>Tentang Duduk Perkara</h4><br></td>
     </tr>
     <tr>
-    <td colspan="3"><p>Menimbang, bahwa Penggugat dengan surat gugatan tertanggal ' . $data_gugatan['tgl_lapor'] . ' yang diterima dan di daftarkan di Kepaniteraan Pengadilan Negeri Banjarbaru Kelas II Telah mengajukan gugatan ' . $data_gugatan["perihal_perkara"] . '.</p><br></td>
+    <td colspan="3"><p>Menimbang, bahwa Penggugat dengan surat gugatan tertanggal ' . tgl_indo($data_gugatan['tgl_lapor']) . ' yang diterima dan di daftarkan di Kepaniteraan Pengadilan Negeri Banjarbaru Kelas II Telah mengajukan gugatan ' . $data_gugatan["perihal_perkara"] . '.</p><br></td>
     </tr>
     <tr>
     <td colspan="3"><p>Menimbang, bahwa pada hari persidangan telah ditentukan untuk Penggugat dan Tergugat masing-masing menghadap kuasanya tersebut.</p><br></td>
@@ -129,7 +131,7 @@ $html .= '</tbody>
 
 <div class="ttd">
 Diputuskan di : Banjarbaru<br>
-Pada tanggal : ' . $data_gugatan['tgl_putusan'] . '<br>
+Pada tanggal : ' . tgl_indo($data_gugatan['tgl_putusan']) . '<br>
 Ketua Pengadilan Negeri Banjarbaru Kelas II,<br><br><br><br><br><br>
 
 Benny Sudarsono, SH., MH<br>

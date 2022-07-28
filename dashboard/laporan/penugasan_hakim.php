@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'functions.php';
 $id_penggugat = $_GET['id_penggugat'];
 $id_permohonan = $_GET['id_permohonan'];
 
@@ -58,6 +59,7 @@ $html = '
 </div>
 <hr>
  <h3 align="center" ><u>Penunjukan Ketua Hakim</u></h3>
+ <h4 align="center" >Nomor : W15-U13/' . getNomor($data_gugatan["tgl_putusan"], $data_gugatan['id_permohonan'], "HK", "01") . '</h4>
  <h4 align="center" >"Demi Keadilan Berdasarkan Ketuhanan Yang Maha Esa"</h4><br>
  <table border="0" cellpadding="3" cellspacing="0" width="100%">
     <thead>';
@@ -68,7 +70,7 @@ $html .= '
     <tr>
     <td>Membaca</td>
     <td>:</td>
-    <td>Berdasarkan perkara pidana yang dilimpahkan oleh jaksa Penuntut Umum Pada Kejaksaan ' . $data_asal_kejaksaan . ' dengan surat permohonan tanggal ' . $data_gugatan['tgl_lapor'] . '</td>
+    <td>Berdasarkan perkara pidana yang dilimpahkan oleh jaksa Penuntut Umum Pada Kejaksaan ' . $data_asal_kejaksaan . ' dengan surat permohonan tanggal ' . tgl_indo($data_gugatan['tgl_lapor']) . '</td>
     </tr>
     <br>
     <tr>

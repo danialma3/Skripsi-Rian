@@ -104,7 +104,7 @@ if (!isset($_SESSION['nip'])) {
                   <h3>Laporan</h3>
                   <li><a><i class="fa fa-book"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="index.php?menu=laporan_j">Laporan Kasus Pidana</a></li>
+                      <li><a href="index.php?menu=filter_pidana">Laporan Kasus Pidana</a></li>
                       <li><a href="index.php?menu=laporan_p">Laporan Kasus Perdata</a></li>
                     </ul>
                   </li>
@@ -204,6 +204,9 @@ if (!isset($_SESSION['nip'])) {
               }
               if ($menu == "hasil_sidang_p") {
                 include "menu_pidana/hasil_sidang.php";
+              }
+              if ($menu == "filter_pidana") {
+                include "menu_pidana/filter_pidana.php";
               }
             } else {
               include "home.php";

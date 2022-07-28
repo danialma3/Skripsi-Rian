@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'functions.php';
 $id_penggugat = $_GET['id_penggugat'];
 $id_permohonan = $_GET['id_permohonan'];
 
@@ -59,7 +60,7 @@ $html = '
 <hr>
  <h3 align="center" ><u>Surat Permohonan Sidang Pidana</u></h3><br>
  <div class="ttd">
-Banjarbaru, ' . $data_gugatan['tgl_lapor'] . '<br>
+Banjarbaru, ' . tgl_indo($data_gugatan['tgl_lapor']) . '<br>
 Kepada Yth. Ketua Pengadilan Negeri kelas II<br>
 di - <br>
 Banjarbaru<br><br><br>

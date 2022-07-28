@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'functions.php';
 $id_penggugat = $_GET['id_penggugat'];
 $id_permohonan = $_GET['id_permohonan'];
 
@@ -57,7 +58,8 @@ $html = '
 <p align="center">Jl. A. Yani Km. 18,5 Banjarbaru</p><br>
 </div>
 <hr>
- <h3 align="center" ><u>Surat Pengabulan Sidang Pidana</u></h3><br>
+ <h3 align="center" ><u>Surat Pengabulan Sidang Pidana</u></h3>
+ <h4 align="center" >Nomor : W15-U13/' . getNomor($data_gugatan["tgl_lapor"], $data_gugatan['id_permohonan'], "PAN", "01") . '</h4><br>
  <div class="ttd">
 Kepada Yth. Ketua Pengadilan Negeri kelas II<br>
 di - <br>
@@ -123,7 +125,7 @@ $html .= '
     <tr>
     <td>Tanggal Sidang</td>
     <td>:</td>
-    <td>' . $data_gugatan['tgl_sidang'] . '</td>
+    <td>' . tgl_indo($data_gugatan['tgl_sidang']) . '</td>
     </tr>
     <tr>
     <td></td>
