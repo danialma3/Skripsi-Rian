@@ -4,6 +4,7 @@ if (!isset($_SESSION['nip'])) {
   echo "<script>document.location.href='../index.php'</script>";
 } else {
   include "../../koneksi.php";
+  require_once 'functions.php';
   $q = mysqli_query($connect, "SELECT * FROM tb_pengguna where nip='" . $_SESSION['nip'] . "'");
   while ($d = mysqli_fetch_array($q)) {
     $nip = $d['nip'];
@@ -104,8 +105,16 @@ if (!isset($_SESSION['nip'])) {
                   <h3>Laporan</h3>
                   <li><a><i class="fa fa-book"></i> Data Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                      <h6>Pidana</h6>
                       <li><a href="index.php?menu=filter_pidana">Laporan Kasus Pidana</a></li>
-                      <li><a href="index.php?menu=laporan_p">Laporan Kasus Perdata</a></li>
+                      <li><a href="index.php?menu=filter_tgl_sidang">Laporan Jadwal Sidang Pidana</a></li>
+                      <li><a href="index.php?menu=filter_tgl_hsl">Laporan Hasil Sidang Pidana</a></li>
+                      <h6>Perdata</h6>
+                      <li><a href="index.php?menu=laporan_perdata">Laporan Kasus Perdata</a></li>
+                      <li><a href="index.php?menu=tgl_sidang_perdata">Laporan Jadwal Sidang Perdata</a></li>
+                      <li><a href="index.php?menu=filter_tgl_hsl_p">Laporan Hasil Sidang Perdata</a></li>
+                      <li><a href="index.php?menu=filter_biaya">Laporan Biaya Sidang Perdata</a></li>
+                      <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -208,6 +217,30 @@ if (!isset($_SESSION['nip'])) {
               if ($menu == "filter_pidana") {
                 include "menu_pidana/filter_pidana.php";
               }
+              if ($menu == "filter_tgl_sidang") {
+                include "menu_pidana/filter_tgl_sidang.php";
+              }
+              if ($menu == "filter_tgl_hsl") {
+                include "menu_pidana/filter_tgl_hsl.php";
+              }
+              if ($menu == "laporan_perdata") {
+                include "menu_perdata/filter_perdata.php";
+              }
+              if ($menu == "tgl_sidang_perdata") {
+                include "menu_perdata/filter_tgl_sidang.php";
+              }
+              if ($menu == "filter_tgl_hsl_p") {
+                include "menu_perdata/filter_tgl_hsl_p.php";
+              }
+              if ($menu == "filter_biaya") {
+                include "menu_perdata/filter_biaya.php";
+              }
+              if ($menu == "pilih") {
+                include "pilih.php";
+              }
+              if ($menu == "hkm_pidana") {
+                include "menu_pidana/filter_hakim_j.php";
+              }
             } else {
               include "home.php";
             }
@@ -274,24 +307,47 @@ if (!isset($_SESSION['nip'])) {
         }();
     </script>
     <script type="text/javascript">
+      const formatRupiah = (money) => {
+        return new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0
+        }).format(money);
+      }
       $(document).ready(function() {
-        $('#datatable').dataTable();
-        $('#datatable-keytable').DataTable({
-          keys: true
-        });
-        $('#datatable-responsive').DataTable();
-        $('#datatable-scroller').DataTable({
-          ajax: "js/datatables/json/scroller-demo.json",
-          deferRender: true,
-          scrollY: 380,
-          scrollCollapse: true,
-          scroller: true
-        });
-        var table = $('#datatable-fixed-header').DataTable({
-          fixedHeader: true
+        $('#datatable').DataTable({
+          footerCallback: function(row, data, start, end, display) {
+
+            var api = this.api();
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+              return typeof i === 'string' ? i.replace(/[\Rp|.]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            };
+
+            // Total over all pages
+            total = api
+              .column(6)
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Total over this page
+            pageTotal = api
+              .column(6, {
+                page: 'current'
+              })
+              .data()
+              .reduce(function(a, b) {
+                return intVal(a) + intVal(b);
+              }, 0);
+
+            // Update footer
+            $(api.column(6).footer()).html(formatRupiah(pageTotal) + ' (Total Seluruh Halaman ' + formatRupiah(total) + ')');
+          },
         });
       });
-      TableManageButtons.init();
     </script>
     <script>
       Chart.defaults.global.legend = {

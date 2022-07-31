@@ -119,7 +119,8 @@ if (!isset($_SESSION['nip'])) {
                                             <li><a href="index.php?menu=tgl_sidang_perdata">Laporan Jadwal Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=filter_tgl_hsl_p">Laporan Hasil Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=filter_biaya">Laporan Biaya Sidang Perdata</a></li>
-                                            <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>>
+                                            <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>
+
                                         </ul>
                                     </li>
                                 </ul>
@@ -154,12 +155,12 @@ if (!isset($_SESSION['nip'])) {
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-sm">
-                                                <h2><i class="fa fa-user"></i> Data Kasus Pidana Dari Tanggal <?= tgl_indo($awal); ?> Sampai Dengan <?= tgl_indo($akhir); ?>
+                                                <h2><i class="fa fa-user"></i> Jadwal Sidang Pidana Dari Tanggal <?= tgl_indo($awal); ?> Sampai Dengan <?= tgl_indo($akhir); ?>
                                             </div>
                                             <div class="col-sm">
                                                 <div>
                                                     <span class="pull-right">
-                                                        <form method="post" action="../laporan/laporan_pidana.php" target="_blank">
+                                                        <form method="post" action="../laporan/laporan_jadwal_pidana.php" target="_blank">
                                                             <input type="hidden" name="awal" class="form-control" id="field1" value="<?= $awal ?>">
                                                             <input type="hidden" name="akhir" class="form-control" id="field1" value="<?= $akhir ?>">
                                                             <button class="btn btn-success">Cetak</button>
@@ -182,9 +183,10 @@ if (!isset($_SESSION['nip'])) {
                                                     <th>Jenis Pengajuan</th>
                                                     <th>Perihal Perkara</th>
                                                     <th>Tanggal Lapor</th>
+                                                    <th>Nama Tergugat</th>
                                                     <th>nama_tergugat</th>
                                                     <th>Nomor Kasus</th>
-                                                    <th>Cetak Laporan</th>
+                                                    <th>Cetak Surat</th>
 
                                                 </tr>
                                             </thead>
@@ -202,9 +204,10 @@ if (!isset($_SESSION['nip'])) {
                                                         <td><?php echo $d['jenis_pengajuan']; ?></td>
                                                         <td><?php echo $d['perihal_perkara']; ?></td>
                                                         <td><?php echo tgl_indo($d['tgl_lapor']); ?></td>
+                                                        <td><?php echo tgl_indo($d['tgl_sidang']); ?></td>
                                                         <td><?php echo $d['nama_t']; ?></td>
                                                         <td><?php echo "W15-U13/" . getNomor($d['tgl_lapor'], $d['id_permohonan'], "PAN", "01"); ?></td>
-                                                        <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan/laporan_gugatan_pidana.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a> Cetak</td>
+                                                        <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan/jadwal_j.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a></td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>

@@ -5,7 +5,7 @@ include "../../koneksi.php";
 $awal = $_POST['awal'];
 $akhir = $_POST['akhir'];
 
-$cek_eksekusi = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "';");
+$cek_eksekusi = mysqli_query($connect, "SELECT * FROM tb_permohonan_p LEFT JOIN tb_penggugat ON tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "';");
 require_once 'functions.php';
 $html = '
 <!DOCTYPE html>
@@ -39,16 +39,17 @@ $html = '
      Telp. (0511) 4705562, Fax. (0511) 4705356</p>
  </div>
  <hr>
- <h3 align="center">REKAPITULASI DATA PIDANA</h3>
+ <h3 align="center">REKAPITULASI DATA JADWAL PERDATA</h3>
  <h4 align="center">Pada Tanggal ' . tgl_indo($awal) . ' Sampai Dengan ' . tgl_indo($akhir) . '</h4>
  <table border="1" cellpadding="10" cellspacing="0" width="100%">
     <thead>
         <tr>
             <td>No</td>
-            <td>Jaksa</td>
+            <td>Nama Penggugat</td>
             <td>Jenis Gugatan</td>
             <td>Perihal Perkara</td>
             <td>Tanggal Lapor</td>
+            <td>Tanggal Sidang</td>
             <td>Nama Tegugat</td>
             <td>Nomor Kasus</td>
         </tr>
@@ -60,11 +61,16 @@ while ($data_eksekusi = mysqli_fetch_assoc($cek_eksekusi)) {
     $dt = $data_eksekusi['no_putusan'];
     $html .= '<tr>
                     <td>' . $no . '</td>
-                    <td>' . $data_eksekusi["nama_j"] . '</td>
+                    <td>' . $data_eksekusi["nama_t"] . '</td>
                     <td>' . $data_eksekusi["jenis_pengajuan"] . '</td>
                     <td>' . $data_eksekusi["perihal_perkara"] . '</td>
-                    <td>' . tgl_indo($data_eksekusi["tgl_lapor"]) . '</td>
-                    <td>' . $data_eksekusi["nama_t"] . '</td>
+                    <td>' . tgl_indo($data_eksekusi["tgl_lapor"]) . '</td>';
+    if ($data_eksekusi["tgl_sidang"]) {
+        $html .= '<td>' . tgl_indo($data_eksekusi["tgl_sidang"]) . '</td>';
+    } else {
+        $html .= '<td>Tanggal Belum ditentukan</td>';
+    }
+    $html .= '<td>' . $data_eksekusi["nama_t"] . '</td>
                     <td>W15-U13/' . getNomor($data_eksekusi["tgl_lapor"], $data_eksekusi['id_permohonan'], "PAN", "01") . '</td>
                 </tr>';
     $no++;
@@ -74,7 +80,7 @@ $html .= '</tbody>
 
 <div class="right-ttd">
 Banjarbaru,' . date('d F Y') . '<br>
-Ketua Pengadilan Negeri Banjarbaru<br><br><br><br><br>
+Ketua Pengadilan Negeri Banjarbaru<br><br><br><br>
 
 Benny Sudarsono, SH., MH<br>
 Pembina (IV/a)<br>

@@ -39,7 +39,7 @@ $html = '
      Telp. (0511) 4705562, Fax. (0511) 4705356</p>
  </div>
  <hr>
- <h3 align="center">REKAPITULASI DATA PIDANA</h3>
+ <h3 align="center">REKAPITULASI DATA JADWAL PIDANA</h3>
  <h4 align="center">Pada Tanggal ' . tgl_indo($awal) . ' Sampai Dengan ' . tgl_indo($akhir) . '</h4>
  <table border="1" cellpadding="10" cellspacing="0" width="100%">
     <thead>
@@ -49,6 +49,7 @@ $html = '
             <td>Jenis Gugatan</td>
             <td>Perihal Perkara</td>
             <td>Tanggal Lapor</td>
+            <td>Tanggal Sidang</td>
             <td>Nama Tegugat</td>
             <td>Nomor Kasus</td>
         </tr>
@@ -64,6 +65,7 @@ while ($data_eksekusi = mysqli_fetch_assoc($cek_eksekusi)) {
                     <td>' . $data_eksekusi["jenis_pengajuan"] . '</td>
                     <td>' . $data_eksekusi["perihal_perkara"] . '</td>
                     <td>' . tgl_indo($data_eksekusi["tgl_lapor"]) . '</td>
+                    <td>' . tgl_indo($data_eksekusi["tgl_sidang"]) . '</td>
                     <td>' . $data_eksekusi["nama_t"] . '</td>
                     <td>W15-U13/' . getNomor($data_eksekusi["tgl_lapor"], $data_eksekusi['id_permohonan'], "PAN", "01") . '</td>
                 </tr>';
@@ -74,7 +76,7 @@ $html .= '</tbody>
 
 <div class="right-ttd">
 Banjarbaru,' . date('d F Y') . '<br>
-Ketua Pengadilan Negeri Banjarbaru<br><br><br><br><br>
+Ketua Pengadilan Negeri Banjarbaru<br><br><br><br>
 
 Benny Sudarsono, SH., MH<br>
 Pembina (IV/a)<br>

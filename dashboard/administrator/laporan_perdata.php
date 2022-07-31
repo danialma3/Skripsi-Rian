@@ -119,7 +119,7 @@ if (!isset($_SESSION['nip'])) {
                                             <li><a href="index.php?menu=tgl_sidang_perdata">Laporan Jadwal Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=filter_tgl_hsl_p">Laporan Hasil Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=filter_biaya">Laporan Biaya Sidang Perdata</a></li>
-                                            <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>>
+                                            <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -159,7 +159,7 @@ if (!isset($_SESSION['nip'])) {
                                             <div class="col-sm">
                                                 <div>
                                                     <span class="pull-right">
-                                                        <form method="post" action="../laporan/laporan_pidana.php" target="_blank">
+                                                        <form method="post" action="../laporan_p/laporan_perdata.php" target="_blank">
                                                             <input type="hidden" name="awal" class="form-control" id="field1" value="<?= $awal ?>">
                                                             <input type="hidden" name="akhir" class="form-control" id="field1" value="<?= $akhir ?>">
                                                             <button class="btn btn-success">Cetak</button>
@@ -178,7 +178,7 @@ if (!isset($_SESSION['nip'])) {
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Jaksa</th>
+                                                    <th>Nama Penggugat</th>
                                                     <th>Jenis Pengajuan</th>
                                                     <th>Perihal Perkara</th>
                                                     <th>Tanggal Lapor</th>
@@ -190,7 +190,7 @@ if (!isset($_SESSION['nip'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "';");
+                                                $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_p LEFT JOIN tb_penggugat ON tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "';");
                                                 $no = 1;
                                                 while ($d = mysqli_fetch_array($query)) {
                                                     $tgl_lapor = $d["tgl_lapor"];
@@ -198,13 +198,13 @@ if (!isset($_SESSION['nip'])) {
 
                                                     <tr>
                                                         <td><?php echo $no++ ?></td>
-                                                        <td><?php echo $d['nama_j']; ?></td>
+                                                        <td><?php echo $d['nama_p']; ?></td>
                                                         <td><?php echo $d['jenis_pengajuan']; ?></td>
                                                         <td><?php echo $d['perihal_perkara']; ?></td>
                                                         <td><?php echo tgl_indo($d['tgl_lapor']); ?></td>
                                                         <td><?php echo $d['nama_t']; ?></td>
                                                         <td><?php echo "W15-U13/" . getNomor($d['tgl_lapor'], $d['id_permohonan'], "PAN", "01"); ?></td>
-                                                        <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan/laporan_gugatan_pidana.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a> Cetak</td>
+                                                        <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan_p/laporan_gugatan.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a> Cetak</td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>

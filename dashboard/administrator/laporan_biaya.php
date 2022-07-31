@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'functions.php';
+
 if (!isset($_SESSION['nip'])) {
     echo "<script>document.location.href='../index.php'</script>";
 } else {
@@ -16,6 +16,7 @@ if (!isset($_SESSION['nip'])) {
     $akhir = $_POST['tgl_akhir'];
     // var_dump($awal, $akhir);
     // die;
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -120,6 +121,7 @@ if (!isset($_SESSION['nip'])) {
                                             <li><a href="index.php?menu=filter_tgl_hsl_p">Laporan Hasil Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=filter_biaya">Laporan Biaya Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>>
+
                                         </ul>
                                     </li>
                                 </ul>
@@ -147,6 +149,7 @@ if (!isset($_SESSION['nip'])) {
                 <div class="right_col" role="main">
                     <div class="row">
 
+                        <?php require_once 'functions.php'; ?>
                         <!-- conten -->
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
@@ -154,12 +157,12 @@ if (!isset($_SESSION['nip'])) {
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-sm">
-                                                <h2><i class="fa fa-user"></i> Data Kasus Pidana Dari Tanggal <?= tgl_indo($awal); ?> Sampai Dengan <?= tgl_indo($akhir); ?>
+                                                <h2><i class="fa fa-user"></i> Rekapitulasi Biaya Sidang Perdata Dari Tanggal <?= tgl_indo($awal); ?> Sampai Dengan <?= tgl_indo($akhir); ?>
                                             </div>
                                             <div class="col-sm">
                                                 <div>
                                                     <span class="pull-right">
-                                                        <form method="post" action="../laporan/laporan_pidana.php" target="_blank">
+                                                        <form method="post" action="../laporan_p/laporan_biaya.php" target="_blank">
                                                             <input type="hidden" name="awal" class="form-control" id="field1" value="<?= $awal ?>">
                                                             <input type="hidden" name="akhir" class="form-control" id="field1" value="<?= $akhir ?>">
                                                             <button class="btn btn-success">Cetak</button>
@@ -178,36 +181,70 @@ if (!isset($_SESSION['nip'])) {
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Jaksa</th>
-                                                    <th>Jenis Pengajuan</th>
+                                                    <th>Nama Penggugat</th>
+                                                    <th>Nama Tergugat</th>
                                                     <th>Perihal Perkara</th>
                                                     <th>Tanggal Lapor</th>
-                                                    <th>nama_tergugat</th>
-                                                    <th>Nomor Kasus</th>
-                                                    <th>Cetak Laporan</th>
+                                                    <th>Nomor Putusan</th>
+                                                    <th>Total Biaya</th>
+                                                    <th>Cetak Biaya</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "';");
+                                                $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_p LEFT JOIN tb_penggugat ON tb_permohonan_p.id_penggugat = tb_penggugat.id_penggugat WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "';");
                                                 $no = 1;
                                                 while ($d = mysqli_fetch_array($query)) {
                                                     $tgl_lapor = $d["tgl_lapor"];
+
                                                 ?>
 
                                                     <tr>
                                                         <td><?php echo $no++ ?></td>
-                                                        <td><?php echo $d['nama_j']; ?></td>
-                                                        <td><?php echo $d['jenis_pengajuan']; ?></td>
+                                                        <td><?php echo $d['nama_p']; ?></td>
+                                                        <td><?php echo $d['nama_t']; ?></td>
                                                         <td><?php echo $d['perihal_perkara']; ?></td>
                                                         <td><?php echo tgl_indo($d['tgl_lapor']); ?></td>
-                                                        <td><?php echo $d['nama_t']; ?></td>
-                                                        <td><?php echo "W15-U13/" . getNomor($d['tgl_lapor'], $d['id_permohonan'], "PAN", "01"); ?></td>
-                                                        <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan/laporan_gugatan_pidana.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a> Cetak</td>
+                                                        <?php if ($d['tgl_putusan']) { ?>
+
+                                                            <td style="width: 18%;">
+                                                                <?php
+                                                                echo "W15-U13/" . getNomor($d['tgl_putusan'], $d['id_permohonan'], "HK", "01");
+                                                                ?>
+                                                            </td>
+
+                                                        <?php
+                                                        } else { ?>
+                                                            <td align="center">
+                                                                <?php echo 'Belum Diputuskan!!'; ?>
+                                                            <?php } ?>
+                                                            </td>
+                                                            <?php if ($d['id_biaya']) { ?>
+                                                                <td style="width: 15%;">
+                                                                    <?php $id_biaya = $d["id_biaya"];
+                                                                    $id_permohonan = $d["id_permohonan"];
+                                                                    $h = mysqli_query($connect, "SELECT * FROM tb_biaya WHERE id_biaya=$id_biaya AND id_permohonan = $id_permohonan");
+                                                                    $data = mysqli_fetch_array($h);
+                                                                    $total = $data['pendaftaran'] + $data['proses'] + $data['panggilan'] + $data['mediasi'] + $data['pemberitahuan'] + $data['redaksi'] + $data['putusan'] + $data['materai'];
+                                                                    ?>
+                                                                    <?php echo rupiah($total); ?>
+                                                                </td>
+                                                            <?php } else { ?>
+                                                                <td align="center">
+                                                                    Biaya Kosong
+                                                                </td>
+                                                            <?php } ?>
+                                                            <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan_p/biaya.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a></td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="6" style="text-align:right">Total Halaman Ini</th>
+                                                    <th colspan="2"></th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -276,24 +313,47 @@ if (!isset($_SESSION['nip'])) {
                 }();
         </script>
         <script type="text/javascript">
+            const formatRupiah = (money) => {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(money);
+            }
             $(document).ready(function() {
-                $('#datatable').dataTable();
-                $('#datatable-keytable').DataTable({
-                    keys: true
-                });
-                $('#datatable-responsive').DataTable();
-                $('#datatable-scroller').DataTable({
-                    ajax: "js/datatables/json/scroller-demo.json",
-                    deferRender: true,
-                    scrollY: 380,
-                    scrollCollapse: true,
-                    scroller: true
-                });
-                var table = $('#datatable-fixed-header').DataTable({
-                    fixedHeader: true
+                $('#datatable').DataTable({
+                    footerCallback: function(row, data, start, end, display) {
+
+                        var api = this.api();
+
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function(i) {
+                            return typeof i === 'string' ? i.replace(/[\Rp|.]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                        };
+
+                        // Total over all pages
+                        total = api
+                            .column(6)
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        // Total over this page
+                        pageTotal = api
+                            .column(6, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        // Update footer
+                        $(api.column(6).footer()).html(formatRupiah(pageTotal) + ' (Total Seluruh Halaman ' + formatRupiah(total) + ')');
+                    },
                 });
             });
-            TableManageButtons.init();
         </script>
         <script>
             Chart.defaults.global.legend = {

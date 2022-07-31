@@ -14,6 +14,7 @@ if (!isset($_SESSION['nip'])) {
 
     $awal = $_POST['tgl_awal'];
     $akhir = $_POST['tgl_akhir'];
+    $id_hakim = $_POST['id_hakim'];
     // var_dump($awal, $akhir);
     // die;
 ?>
@@ -119,7 +120,8 @@ if (!isset($_SESSION['nip'])) {
                                             <li><a href="index.php?menu=tgl_sidang_perdata">Laporan Jadwal Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=filter_tgl_hsl_p">Laporan Hasil Sidang Perdata</a></li>
                                             <li><a href="index.php?menu=filter_biaya">Laporan Biaya Sidang Perdata</a></li>
-                                            <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>>
+                                            <li><a href="index.php?menu=pilih">Laporan Tugas Hakim Pidana dan Perdata</a></li>
+
                                         </ul>
                                     </li>
                                 </ul>
@@ -154,14 +156,15 @@ if (!isset($_SESSION['nip'])) {
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-sm">
-                                                <h2><i class="fa fa-user"></i> Data Kasus Pidana Dari Tanggal <?= tgl_indo($awal); ?> Sampai Dengan <?= tgl_indo($akhir); ?>
+
                                             </div>
                                             <div class="col-sm">
                                                 <div>
                                                     <span class="pull-right">
-                                                        <form method="post" action="../laporan/laporan_pidana.php" target="_blank">
+                                                        <form method="post" action="../laporan/laporan_hkm_j.php" target="_blank">
                                                             <input type="hidden" name="awal" class="form-control" id="field1" value="<?= $awal ?>">
                                                             <input type="hidden" name="akhir" class="form-control" id="field1" value="<?= $akhir ?>">
+                                                            <input type="hidden" name="id_hakim" class="form-control" id="field1" value="<?= $id_hakim ?>">
                                                             <button class="btn btn-success">Cetak</button>
                                                         </form>
                                                     </span>
@@ -178,19 +181,23 @@ if (!isset($_SESSION['nip'])) {
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Jaksa</th>
-                                                    <th>Jenis Pengajuan</th>
+                                                    <th>Nama Penggugat</th>
+                                                    <th>Nama Tergugat</th>
                                                     <th>Perihal Perkara</th>
                                                     <th>Tanggal Lapor</th>
-                                                    <th>nama_tergugat</th>
-                                                    <th>Nomor Kasus</th>
-                                                    <th>Cetak Laporan</th>
+                                                    <th>Nomor Surat Hakim</th>
+                                                    <th>Nama Hakim</th>
+                                                    <th>Cetak </th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "';");
+                                                if ($id_hakim = "semua") {
+                                                    $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa");
+                                                } else {
+                                                    $query = mysqli_query($connect, "SELECT * FROM tb_permohonan_j LEFT JOIN tb_jaksa ON tb_permohonan_j.id_penggugat = tb_jaksa.id_jaksa WHERE tgl_lapor BETWEEN '" . $awal . "' AND '" . $akhir . "' AND id_hakim = '" . $id_hakim . "';");
+                                                }
                                                 $no = 1;
                                                 while ($d = mysqli_fetch_array($query)) {
                                                     $tgl_lapor = $d["tgl_lapor"];
@@ -199,12 +206,29 @@ if (!isset($_SESSION['nip'])) {
                                                     <tr>
                                                         <td><?php echo $no++ ?></td>
                                                         <td><?php echo $d['nama_j']; ?></td>
-                                                        <td><?php echo $d['jenis_pengajuan']; ?></td>
+                                                        <td><?php echo $d['nama_t']; ?></td>
                                                         <td><?php echo $d['perihal_perkara']; ?></td>
                                                         <td><?php echo tgl_indo($d['tgl_lapor']); ?></td>
-                                                        <td><?php echo $d['nama_t']; ?></td>
-                                                        <td><?php echo "W15-U13/" . getNomor($d['tgl_lapor'], $d['id_permohonan'], "PAN", "01"); ?></td>
-                                                        <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan/laporan_gugatan_pidana.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a> Cetak</td>
+                                                        <?php if ($d['tgl_putusan']) { ?>
+                                                            <td><?php echo "W15-U13/" . getNomor($d['tgl_putusan'], $d['id_permohonan'], "HK", "01"); ?></td>
+                                                        <?php } else { ?>
+                                                            <td>Hakim Belum Ditugaskan</td>
+                                                        <?php } ?>
+                                                        <?php if ($d['id_hakim']) { ?>
+                                                            <td align="center">
+                                                                <?php
+                                                                $h = $d['id_hakim'];
+                                                                $hakim = mysqli_query($connect, "SELECT * FROM tb_hakim WHERE id_hakim = $h ");
+                                                                while ($data = mysqli_fetch_array($hakim)) {
+                                                                    echo $data['nama_hakim'];
+                                                                } ?>
+                                                            </td>
+                                                        <?php } else { ?>
+                                                            <td align="center">
+                                                                Hakim Belum Ditentukan
+                                                            </td>
+                                                        <?php } ?>
+                                                        <td align="center" width="100px"><a class="btn btn-sm btn-success" href="../laporan/penugasan_hakim.php?id_permohonan=<?php echo $d['id_permohonan']; ?>" target="_BLANK"><i class="fa fa-print"></i></a> Cetak</td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>
